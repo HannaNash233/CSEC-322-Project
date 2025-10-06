@@ -7,7 +7,7 @@
 # This file tests the functions in the BankAccount.py file
 
 import unittest
-from BankAccount import BankAccount
+from bankAccount import BankAccount
 
 class TestBankAccount(unittest.TestCase):
   pass
