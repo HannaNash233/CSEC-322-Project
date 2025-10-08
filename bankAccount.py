@@ -18,20 +18,32 @@ class BankAccount:
   @param lastName: The last name of the account holder
   @param initBalance: The initial bank account balance (float)
   def __init__(firstName, lastName, initBalance = 0.0):
-    pass
+    self.firstName = firstName
+    self.lastName = lastName
+    self.balance = float(initBalance)
+    self.accountNumber = BankAccount._NEXTACCOUNTNUMBER
+    BankAccount._NEXTACCOUNTNUMBER += 1
+    self.transactions = []
 
 
   # Returns a string that contains the account details (first & last name, account number, balance, overdrawn counter)
   @return A human readable string containing the account details
   def __str__(self):
-    pass
+    return (f"Account Holder: {self.firstName} {self.lastName}\n"
+                f"Account Number: {self.accountNumber}\n"
+                f"Balance: ${self.balance:.2f}\n")
 
 
   # Deposit an amount into the account
   @param amount: The amount being deposited (float)
   @return True if the deposit is successful, and False otherwise
   def deposit(self, amount):
-    pass
+    if amount <= 0:
+      return False
+    else:
+      self.balance = self.balance + amount
+      self.transactions.append(f"Deposited ${amount:.2f}")
+      return True
 
 
   # Calculate the interest and add the interest amount to the account
