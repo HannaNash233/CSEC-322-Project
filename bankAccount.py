@@ -64,7 +64,30 @@ class BankAccount:
   @param amount: The amount being transfered
   @return True if the transfer is successful, and False otherwise
   def tranfer(self, fromAccount, amount):
-    pass
+    # If fromAccount tries to make a transfer to itself, deny the transfer and return false
+    if fromAccount is self:
+      print("Transfer denied: Cannot transfer to the same account.")
+      return False
+
+    # If the amount being transfered is negative or equal to 0, print a message to let the user know
+    # that the amount being transferred needs to be positive, and return false
+    if amount <= 0:
+      print("Transfer denied: Amount must be positive.")
+      return False
+
+    # Create a variable to store the successful withdrawal
+    successfulWithdrawal = fromAccount.withdraw(amount)
+
+    # b. If the withdrawal is successful:
+    if successfulWithdrawal:
+      # a. Make a deposit of the same amount in the “to” account
+      # This 'to' account is 'self', and its deposit method creates a 'deposit' transaction.
+      self.deposit(amount) 
+      return True
+    else:
+      print("Transfer failed: Withdrawal from the source account was denied.")
+      return False
+
 
 
   # Print the list of transactions for an account
