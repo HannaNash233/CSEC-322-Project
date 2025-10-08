@@ -17,7 +17,7 @@ class BankAccount:
   @param firstName: The first name of the account holder
   @param lastName: The last name of the account holder
   @param initBalance: The initial bank account balance (float)
-  def __init__(firstName, lastName, initBalance = 0.0):
+  def __init__(self, firstName, lastName, initBalance = 0.0):
     self.firstName = firstName
     self.lastName = lastName
     self.balance = float(initBalance)
@@ -101,7 +101,7 @@ class BankAccount:
       return
 
     # Iterate through the list of transactions and print them
-    for transaction in self._transactions:
+    for transaction in self.transactions:
       print(transaction)
 
 
