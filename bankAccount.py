@@ -78,12 +78,13 @@ class BankAccount:
     # Create a variable to store the successful withdrawal
     successfulWithdrawal = fromAccount.withdraw(amount)
 
-    # b. If the withdrawal is successful:
+    # If the withdrawal is successful, deposit the specified amount, and return true
     if successfulWithdrawal:
-      # a. Make a deposit of the same amount in the “to” account
-      # This 'to' account is 'self', and its deposit method creates a 'deposit' transaction.
       self.deposit(amount) 
       return True
+
+    # If the withdrawal does not meet the proper conditions, print a message to let the user know
+    # that the transfer failed, and return false
     else:
       print("Transfer failed: Withdrawal from the source account was denied.")
       return False
