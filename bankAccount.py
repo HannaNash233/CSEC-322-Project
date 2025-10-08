@@ -93,7 +93,16 @@ class BankAccount:
 
   # Print the list of transactions for an account
   def printTransactions(self):
-    pass
+    print("\n Transactions for Account %d" % (self.accountNumber))
+
+    # Check if the list of transactions is empty
+    if not self._transactions:
+      print("No transactions recorded.")
+      return
+
+    # Iterate through the list of transactions and print them
+    for transaction in self._transactions:
+      print(transaction)
 
 
 
