@@ -6,6 +6,8 @@
 
 # This module defines the BankAccount class
 
+from transaction import Transaction
+
 class BankAccount:
   # Attributes (overdraft fee, interest rate, next available account number)
   OVERDRAFT_FEE = 20.00
@@ -14,20 +16,21 @@ class BankAccount:
 
   
   # Constructs a bank account.
-  @param firstName: The first name of the account holder
-  @param lastName: The last name of the account holder
-  @param initBalance: The initial bank account balance (float)
-  def __init__(self, firstName, lastName, initBalance = 0.0):
+  #@param firstName: The first name of the account holder
+  #@param lastName: The last name of the account holder
+  #@param initBalance: The initial bank account balance (float)
+  def __init__(firstName, lastName, initBalance = 0.0):
     self.firstName = firstName
     self.lastName = lastName
     self.balance = float(initBalance)
     self.accountNumber = BankAccount._NEXTACCOUNTNUMBER
     BankAccount._NEXTACCOUNTNUMBER += 1
     self.transactions = []
+    self.overdrawn = 0
 
 
   # Returns a string that contains the account details (first & last name, account number, balance, overdrawn counter)
-  @return A human readable string containing the account details
+  #@return A human readable string containing the account details
   def __str__(self):
     return (f"Account Holder: {self.firstName} {self.lastName}\n"
                 f"Account Number: {self.accountNumber}\n"
@@ -35,8 +38,8 @@ class BankAccount:
 
 
   # Deposit an amount into the account
-  @param amount: The amount being deposited (float)
-  @return True if the deposit is successful, and False otherwise
+  #@param amount: The amount being deposited (float)
+  #@return True if the deposit is successful, and False otherwise
   def deposit(self, amount):
     if amount <= 0:
       return False
@@ -47,16 +50,51 @@ class BankAccount:
 
 
   # Calculate the interest and add the interest amount to the account
-  @return True of the interest is successfully calculated, and False otherwise
+  #@return True of the interest is successfully calculated, and False otherwise
   def calculateInterest(self):
-    pass
+    interestEarned = self.balance * INTEREST_RATE
+    self.balance += interestEarned
+    # add the transacation number
+    interestTransaction = Transcation("interest", interestEarned)
+    self.transacations.append(interestTransaction)
+    
+    if interestEarned:
+      return True
+    else:
+      return False
 
 
   # Withdraw an amount from the account
-  @param amount: The amount being withdrawn (float)
-  @return True if the withdrawl is successful, and False otherwise
+  #@param amount: The amount being withdrawn (float)
+  #@return True if the withdrawl is successful, and False otherwise
   def withdraw(self, amount):
-    pass
+    withdrawCheck = self.balance + 250 
+    if (amount > withdrawCheck):
+      print("Transaction denied\n")
+      return False
+    elif (self.balance > 0):
+      withdrawTransacation = Transaction("withdrawal", amount)
+      self.transacations.append(withdrawTransaction)
+      self.balance = self.balance - amount
+      print("Transaction Complete")
+      return True
+    elif (self.balance < 0):
+      self.overdrawn += 1
+      penaltyTransaction = Transaction("penalty", amount)
+      overdrawnDeduct = self.balance - OVERDRAFT_FEE
+      print("Account has been overdrawn\n")
+      self.transacations.append(penaltyTransaction)
+      return False
+    else:
+      print("Transaction has been denied\n")
+      return False
+      
+
+
+  # Transfer an amount to this account from the account passed as a parameter
+  #@param fromAccount: The BankAccount object to transfer the money from
+  #@param amount: The amount being transfered
+  #@return True if the transfer is successful, and False otherwise
 
 
   # Transfer an amount to this account from the account passed as a parameter
