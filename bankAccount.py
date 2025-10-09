@@ -95,13 +95,52 @@ class BankAccount:
   #@param fromAccount: The BankAccount object to transfer the money from
   #@param amount: The amount being transfered
   #@return True if the transfer is successful, and False otherwise
+
+
+  # Transfer an amount to this account from the account passed as a parameter
+  @param fromAccount: The BankAccount object to transfer the money from
+  @param amount: The amount being transfered
+  @return True if the transfer is successful, and False otherwise
   def tranfer(self, fromAccount, amount):
-    pass
+    # If fromAccount tries to make a transfer to itself, deny the transfer and return false
+    if fromAccount is self:
+      print("Transfer denied: Cannot transfer to the same account.")
+      return False
+
+    # If the amount being transfered is negative or equal to 0, print a message to let the user know
+    # that the amount being transferred needs to be positive, and return false
+    if amount <= 0:
+      print("Transfer denied: Amount must be positive.")
+      return False
+
+    # Create a variable to store the successful withdrawal
+    successfulWithdrawal = fromAccount.withdraw(amount)
+
+    # If the withdrawal is successful, deposit the specified amount, and return true
+    if successfulWithdrawal:
+      self.deposit(amount) 
+      return True
+
+    # If the withdrawal does not meet the proper conditions, print a message to let the user know
+    # that the transfer failed, and return false
+    else:
+      print("Transfer failed: Withdrawal from the source account was denied.")
+      return False
+
 
 
   # Print the list of transactions for an account
   def printTransactions(self):
-    pass
+    print("\n Transactions for Account %d" % (self.accountNumber))
+
+    # Check if the list of transactions is empty
+    if not self._transactions:
+      print("No transactions recorded.")
+      return
+
+    # Iterate through the list of transactions and print them
+    for transaction in self.transactions:
+      print(transaction)
 
 
 
