@@ -19,6 +19,9 @@ class BankAccount:
   #@param firstName: The first name of the account holder
   #@param lastName: The last name of the account holder
   #@param initBalance: The initial bank account balance (float)
+  #@require firstName to be 1-25 characters with no special characters
+  #@require lastName to be 1-40 characters with no special characters
+  #@require accountNumber is greater than or equal to 1000
   def __init__(firstName, lastName, initBalance = 0.0):
     self.firstName = firstName
     self.lastName = lastName
