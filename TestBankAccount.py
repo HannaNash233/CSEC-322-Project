@@ -17,9 +17,9 @@ class TestBankAccount(unittest.TestCase):
     self.bankAccount2 = BankAccount("Nancy", "Jackson", balance)
     self.bankAccount3 = BankAccount("Reggie", "Miller", balance)
 
-
-
-
+  # The test_constructor method tests the constructor.
+  def test_constructor(self):
+    pass
 
 
 
