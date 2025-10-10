@@ -95,12 +95,6 @@ class BankAccount:
   #@param fromAccount: The BankAccount object to transfer the money from
   #@param amount: The amount being transfered
   #@return True if the transfer is successful, and False otherwise
-
-
-  # Transfer an amount to this account from the account passed as a parameter
-  @param fromAccount: The BankAccount object to transfer the money from
-  @param amount: The amount being transfered
-  @return True if the transfer is successful, and False otherwise
   def tranfer(self, fromAccount, amount):
     # If fromAccount tries to make a transfer to itself, deny the transfer and return false
     if fromAccount is self:
