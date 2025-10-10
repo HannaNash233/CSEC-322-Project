@@ -25,6 +25,7 @@ class BankAccount:
     self.balance = float(initBalance)
     self.accountNumber = BankAccount._NEXTACCOUNTNUMBER
     BankAccount._NEXTACCOUNTNUMBER += 1
+    self.transactionNumber = 100
     self.transactions = []
     self.overdrawn = 0
 
@@ -55,8 +56,9 @@ class BankAccount:
     interestEarned = self.balance * INTEREST_RATE
     self.balance += interestEarned
     # add the transacation number
-    interestTransaction = Transcation("interest", interestEarned)
+    interestTransaction = Transcation(self.transactionNumber, "interest", interestEarned)
     self.transacations.append(interestTransaction)
+    self.transactionNumber += 1
     
     if interestEarned:
       return True
@@ -73,7 +75,7 @@ class BankAccount:
       print("Transaction denied\n")
       return False
     elif (self.balance > 0):
-      withdrawTransacation = Transaction("withdrawal", amount)
+      withdrawTransacation = Transaction(self.transactionNumber, "withdrawal", amount)
       self.transacations.append(withdrawTransaction)
       self.balance = self.balance - amount
       print("Transaction Complete")
@@ -81,6 +83,7 @@ class BankAccount:
     elif (self.balance < 0):
       self.overdrawn += 1
       penaltyTransaction = Transaction("penalty", amount)
+      self.transactionNumber += 1
       overdrawnDeduct = self.balance - OVERDRAFT_FEE
       print("Account has been overdrawn\n")
       self.transacations.append(penaltyTransaction)
