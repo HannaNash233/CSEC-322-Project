@@ -77,6 +77,7 @@ class BankAccount:
     elif (self.balance > 0):
       withdrawTransacation = Transaction(self.transactionNumber, "withdrawal", amount)
       self.transacations.append(withdrawTransaction)
+      self.overdrawn += 1
       self.balance = self.balance - amount
       print("Transaction Complete")
       return True
