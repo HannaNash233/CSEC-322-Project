@@ -10,7 +10,12 @@ import unittest
 from bankAccount import BankAccount
 
 class TestBankAccount(unittest.TestCase):
-  pass
+
+  # The setup method creates three bank accounts.
+  def setUp(self):
+    self.bankAccount1 = BankAccount("John", "Smith", balance)
+    self.bankAccount2 = BankAccount("Nancy", "Jackson", balance)
+    self.bankAccount3 = BankAccount("Reggie", "Miller", balance)
 
 
 
