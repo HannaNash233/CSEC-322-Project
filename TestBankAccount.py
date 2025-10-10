@@ -11,3 +11,12 @@ from bankAccount import BankAccount
 
 class TestBankAccount(unittest.TestCase):
   pass
+
+
+
+
+
+
+
+if __name__ == '__main__':
+  unittest.main()
