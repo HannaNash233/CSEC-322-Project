@@ -23,6 +23,12 @@ class BankAccount:
   #@require lastName to be 1-40 characters with no special characters
   #@require accountNumber is greater than or equal to 1000
   def __init__(firstName, lastName, initBalance = 0.0):
+
+    # Assertions
+    assert firstName.isalpha and firstName >= 1 and firstName <= 25
+    assert lastName.isalpha and lastName >= 1 and lastName <= 40
+    assert accountNumber >= 1000
+    
     self.firstName = firstName
     self.lastName = lastName
     self.balance = float(initBalance)
