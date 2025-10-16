@@ -25,8 +25,8 @@ class BankAccount:
   def __init__(self, firstName, lastName, initBalance = 0.0):
 
     # Assertions
-    assert firstName.isalpha and firstName >= 1 and firstName <= 25
-    assert lastName.isalpha and lastName >= 1 and lastName <= 40
+    assert firstName.isalpha and len(firstName) >= 1 and len(firstName) <= 25
+    assert lastName.isalpha and len(lastName) >= 1 and len(lastName) <= 40
     assert accountNumber >= 1000
     
     self.firstName = firstName
