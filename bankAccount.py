@@ -55,7 +55,10 @@ class BankAccount:
       return False
     else:
       self.balance = self.balance + amount
-      self.transactions.append(f"Deposited ${amount:.2f}")
+      balanceTransaction = Transaction(self.transactionNumber, "deposit", amount)
+      #self.transactions.append(f"Deposited ${amount:.2f}")
+      self.transactions.append(balanceTransaction)
+      self.transactionNumber += 1
       return True
 
 
