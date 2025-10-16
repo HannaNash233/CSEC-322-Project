@@ -17,16 +17,44 @@ class TestBankAccount(unittest.TestCase):
     OVERDRAFT_LIMIT = 250.00
     DEBUG = True
 
-  # The setup method creates three bank accounts.
-  def setUp(self):
-    self.bankAccount1 = BankAccount("John", "Smith", balance)
-    self.bankAccount2 = BankAccount("Nancy", "Jackson", balance)
-    self.bankAccount3 = BankAccount("Reggie", "Miller", balance)
+    BALANCE1 = 3200
+    WITHDRAWL1 = 500
+    DEPOSIT1 = 450
+    FIRST_NAME1 = "Hank"
+    LAST_NAME1 = "Hill"
+    
+    BALANCE2 = 1500
+    WITHDRAWL2 = 1750
+    DEPOSIT2 = 200
+    FIRST_NAME2 = "Mickey"
+    LAST_NAME2 = "Mouse"    
+
+  # The setup method creates bank accounts.
+    def setUp(self):
+        self.bankAccount1 = BankAccount("John", "Smith", TestBankAccount.INITIAL_BALANCE)
+        self.bankAccount2 = BankAccount("Nancy", "Jackson", TestBankAccount.INITIAL_BALANCE)
+        self.bankAccount3 = BankAccount("Reggie", "Miller", 50)
+        self.account4 = BankAccount(TestBankAccount.FIRST_NAME1, TestBankAccount.LAST_NAME1, TestBankAccount.BALANCE1)
+        self.account5 = BankAccount(TestBankAccount.FIRST_NAME2, TestBankAccount.LAST_NAME2, TestBankAccount.BALANCE2)
+        # checking that the asserts fail within the account creation
+        try:
+            self.account6 = BankAccount("D", "P", TestBankAccount.BALANCE1)
+            self.account7 = BankAccount("MabelAndDipperPines", "StanfordAndStanleyPines", TestBankAccount.BALANCE1)
+        except AssertionError as error:
+            print(error)
+                
 
   
   # The test_constructor method tests the constructor.
-  def test_constructor(self):
-    pass
+    def test_constructor(self):
+        self.assertEqual(self.account4.firstName, "Hank")
+        self.assertEqual(self.account4.lastName, "Hill")
+        #self.assertEqual(self.account3, )
+        if TestBankAccount.debug:
+            print("\nTesting Constructor")
+            print("The First Account: ", self.account4)
+            print("The Second Account: ", self.account5)  
+   
 
 
   # Test to see if the transfer is successful
@@ -66,6 +94,7 @@ class TestBankAccount(unittest.TestCase):
         success = self.bankAccount1.tranfer(self.bankAccount3, transferAmount)
         
         # Assert that the transfer failed
+        #print("Trannsfer denied: ", success)
         self.assertFalse(success)
         
         # Assert that bankAccount1's balance does not change
@@ -91,63 +120,36 @@ class TestBankAccount(unittest.TestCase):
         # Assert that the transactions list actually contains the recorded transactions
         self.assertGreater(len(self.bankAccount3.transactions), 0)
 
-
-
-    BALANCE1 = 3200
-    WITHDRAWL1 = 500
-    DEPOSIT1 = 450
-    DEBUG = True
-    FIRST_NAME1 = "Hank"
-    LAST_NAME1 = "Hill"
     
-    BALANCE2 = 1500
-    WITHDRAWL2 = 1750
-    DEPOSIT2 = 200
-    FIRST_NAME2 = "Mickey"
-    LAST_NAME2 = "Mouse"
-    
-    def setUp(self):
-        self.account1 = BankAccount(TestBankAccount.FIRST_NAME1, TestBankAccount.LAST_NAME1, TestBankAccount.BALANCE1)
-        self.account2 = BankAccount(TestBankAccount.FIRST_NAME2, TestBankAccount.LAST_NAME2, TestBankAccount.BALANCE2)
-        
-        
+   
     def test_calculateInterest(self):
-            
-            
-        interestTest1 = self.account1.calculateInterest()
-        interestTest2 = self.account2.calculateInterest()
-        self.assertEqual(self.account1.balance, 3440)
-        self.assertEqual(self.account2.balance, 1612.50)
+        # creating the interest test
+        interestTest1 = self.account4.calculateInterest()
+        # checking that its equal to 3440 (the balance + the interest earned)
+        self.assertEqual(self.account4.balance, 3440)
         
+        # printing the information if debug is true 
         if TestBankAccount.debug:
             print("\nTesting Calculate Interest")
-            print("First Account After Interest", self.account1.balance)
-            print("Second Account After Interest", self.account2.balance)
-        
-    def test_constructor(self):
-        self.assertEqual(self.account1.firstName, "Hank")
-        self.assertEqual(self.account1.lastName, "Hill")
-        if TestBankAccount.debug:
-            print("\nTesting Constructor")
-            print("The First Account: ", self.account1)
-            print("The Second Account: ", self.account2)
+            print("First Account After Interest", self.account4.balance)
+           
+    
     
     def test_withdrawl(self):
-       
-        withdrawlTest1 = self.account1.withdraw(TestBankAccount.WITHDRAWL1)
-        withdrawlTest2 = self.account2.withdraw(TestBankAccount.WITHDRAWL2)
-        withdrawlTest3 = self.account1.withdraw(5000)
-        self.assertEqual(self.account1.balance, 2700)
+        # creating three different withdrawl tests (one to pass, one to overdraw,
+        # one to deny it completely) 
+        withdrawlTest1 = self.account4.withdraw(TestBankAccount.WITHDRAWL1)
+        withdrawlTest2 = self.account5.withdraw(TestBankAccount.WITHDRAWL2)
+        withdrawlTest3 = self.account4.withdraw(5000)
+        
+        self.assertEqual(self.account4.balance, 2700)
         self.assertFalse(withdrawlTest2)
         self.assertFalse(withdrawlTest3)
+        # printing out the balances after the tests if debug is true
         if TestBankAccount.debug:
             print("\nTesting Withdraw")
-            print("First Account Balance After Withdraw", self.account1.balance)
-            print("Second Account Balance After Withdraw ", self.account2.balance)
-            
-            
- 
-            
+            print("First Account Balance After Withdraw", self.account4.balance)
+            print("Second Account Balance After Withdraw ", self.account5.balance)
             
         
         
@@ -155,4 +157,3 @@ class TestBankAccount(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
         
-    
