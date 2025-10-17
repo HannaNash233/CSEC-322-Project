@@ -154,22 +154,22 @@ class BankAccount:
 
 
     def getFirst(self):
-    return self._firstNamwe
+      return self._firstNamwe
   
     def getLast(self):
-    return self._lastName 
+      return self._lastName 
     
     def getAccountNumber(self):
-    return self._accountNumber  
+      return self._accountNumber  
  
     def getBalance(self):
-    return self._balance 
+      return self._balance 
     
     def getTransactions(self):
-    return self._transactions 
+      return self._transactions 
     
     def getBalance(self):
-    return self._balance 
+      return self._balance 
 
 
 
