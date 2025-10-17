@@ -13,13 +13,22 @@ class BankAccount:
   OVERDRAFT_FEE = 20.00
   INTEREST_RATE = 0.075
   _NEXTACCOUNTNUMBER = 1000
-
+  
   
   # Constructs a bank account.
   #@param firstName: The first name of the account holder
   #@param lastName: The last name of the account holder
   #@param initBalance: The initial bank account balance (float)
-  def __init__(self, firstName, lastName, initBalance = 0.0):
+  #@require firstName to be 1-25 characters with no special characters
+  #@require lastName to be 1-40 characters with no special characters
+  #@require accountNumber is greater than or equal to 1000
+  def __init__(self, firstName, lastName, initBalance = 0.0, accountNumber = 1000):
+
+    # Assertions
+    assert firstName.isalpha and len(firstName) >= 1 and len(firstName) <= 25
+    assert lastName.isalpha and len(lastName) >= 1 and len(lastName) <= 40
+    assert accountNumber >= 1000
+    
     self.firstName = firstName
     self.lastName = lastName
     self.balance = float(initBalance)
@@ -34,8 +43,8 @@ class BankAccount:
   #@return A human readable string containing the account details
   def __str__(self):
     return (f"Account Holder: {self.firstName} {self.lastName}\n"
-            f"Account Number: {self.accountNumber}\n"
-            f"Balance: ${self.balance:.2f}\n")
+                f"Account Number: {self.accountNumber}\n"
+                f"Balance: ${self.balance:.2f}\n")
 
 
   # Deposit an amount into the account
@@ -43,23 +52,25 @@ class BankAccount:
   #@return True if the deposit is successful, and False otherwise
   def deposit(self, amount):
     if amount <= 0:
-      print(f"Deposit Denied ${amount:.2f}\n")
       return False
     else:
       self.balance = self.balance + amount
-      self.transactions.append(f"Deposited ${amount:.2f}")
-      print(f"Deposit successful ${amount:.2f}\n")
+      balanceTransaction = Transaction(self.transactionNumber, "deposit", amount)
+      #self.transactions.append(f"Deposited ${amount:.2f}")
+      self.transactions.append(balanceTransaction)
+      self.transactionNumber += 1
       return True
 
 
   # Calculate the interest and add the interest amount to the account
   #@return True of the interest is successfully calculated, and False otherwise
   def calculateInterest(self):
-    interestEarned = self.balance * BankAccount.INTEREST_RATE
+    interestEarned = self.balance * self.INTEREST_RATE
     self.balance += interestEarned
     # add the transacation number
-    interestTransaction = Transaction("interest", interestEarned)
+    interestTransaction = Transaction(self.transactionNumber, "interest", interestEarned)
     self.transactions.append(interestTransaction)
+    self.transactionNumber += 1
     
     if interestEarned:
       return True
@@ -73,23 +84,25 @@ class BankAccount:
   def withdraw(self, amount):
     withdrawCheck = self.balance + 250 
     if (amount > withdrawCheck):
-      print(f"Withdraw denied ${amount:.2f}\n")
+      print("Transaction denied\n")
       return False
     elif (self.balance > 0):
       withdrawTransaction = Transaction(self.transactionNumber, "withdrawal", amount)
       self.transactions.append(withdrawTransaction)
+      self.overdrawn += 1
       self.balance = self.balance - amount
-      if (self.balance < 0):
-        self.overdrawn += 1
-        penaltyTransaction = Transaction("penalty", amount)
-        overdrawnDeduct = self.balance - BankAccount.OVERDRAFT_FEE
-        print("Account has been overdrawn\n")
-        self.transactions.append(penaltyTransaction)
-        return False
-      print(f"Withdraw Complete ${amount:.2f}\n")
+      print("Transaction Complete")
       return True
+    elif (self.balance < 0):
+      self.overdrawn += 1
+      penaltyTransaction = Transaction("penalty", amount)
+      self.transactionNumber += 1
+      overdrawnDeduct = self.balance - OVERDRAFT_FEE
+      print("Account has been overdrawn\n")
+      self.transacations.append(penaltyTransaction)
+      return False
     else:
-      print("Withdraw has been denied\n")
+      print("Transaction has been denied\n")
       return False
       
 
@@ -98,13 +111,7 @@ class BankAccount:
   #@param fromAccount: The BankAccount object to transfer the money from
   #@param amount: The amount being transfered
   #@return True if the transfer is successful, and False otherwise
-
-
-  # Transfer an amount to this account from the account passed as a parameter
-  #@param fromAccount: The BankAccount object to transfer the money from
-  #@param amount: The amount being transfered
-  #@return True if the transfer is successful, and False otherwise
-  def transfer(self, fromAccount, amount):
+  def tranfer(self, fromAccount, amount):
     # If fromAccount tries to make a transfer to itself, deny the transfer and return false
     if fromAccount is self:
       print("Transfer denied: Cannot transfer to the same account.")
