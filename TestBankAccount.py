@@ -34,8 +34,10 @@ class TestBankAccount(unittest.TestCase):
         self.bankAccount1 = BankAccount("John", "Smith", TestBankAccount.INITIAL_BALANCE)
         self.bankAccount2 = BankAccount("Nancy", "Jackson", TestBankAccount.INITIAL_BALANCE)
         self.bankAccount3 = BankAccount("Reggie", "Miller", 50)
+        self.acc1 = BankAccount("William", "Wian", 1000000)
         self.account4 = BankAccount(TestBankAccount.FIRST_NAME1, TestBankAccount.LAST_NAME1, TestBankAccount.BALANCE1)
         self.account5 = BankAccount(TestBankAccount.FIRST_NAME2, TestBankAccount.LAST_NAME2, TestBankAccount.BALANCE2)
+        
         # checking that the asserts fail within the account creation
         try:
             self.account6 = BankAccount("D", "P", TestBankAccount.BALANCE1)
@@ -47,9 +49,9 @@ class TestBankAccount(unittest.TestCase):
   
   # The test_constructor method tests the constructor.
     def test_constructor(self):
-        self.assertEqual(self.account4.firstName, "Hank")
-        self.assertEqual(self.account4.lastName, "Hill")
-        #self.assertEqual(self.account3, )
+        self.assertEqual(self.account4.getFirst(), "Hank")
+        self.assertEqual(self.account4.getLast(), "Hill")
+        self.assertEqual(self.account4.getBalance(), TestBankAccount.BALANCE1)
         if TestBankAccount.debug:
             print("\nTesting Constructor")
             print("The First Account: ", self.account4)
@@ -121,7 +123,7 @@ class TestBankAccount(unittest.TestCase):
         self.assertGreater(len(self.bankAccount3.transactions), 0)
 
     
-   
+    # test calculate interest 
     def test_calculateInterest(self):
         # creating the interest test
         interestTest1 = self.account4.calculateInterest()
@@ -133,25 +135,55 @@ class TestBankAccount(unittest.TestCase):
             print("\nTesting Calculate Interest")
             print("First Account After Interest", self.account4.balance)
            
-    
-    
-    def test_withdrawl(self):
-        # creating three different withdrawl tests (one to pass, one to overdraw,
-        # one to deny it completely) 
-        withdrawlTest1 = self.account4.withdraw(TestBankAccount.WITHDRAWL1)
-        withdrawlTest2 = self.account5.withdraw(TestBankAccount.WITHDRAWL2)
-        withdrawlTest3 = self.account4.withdraw(5000)
+    # test deposit 
+    def testDeposit(self):
+           # Should work
+        self.assertTrue(self.acc1.deposit(500000)) 
+        self.assertEqual(self.acc1.balance, 1500000.0)
+        print(f" New account balance: ${self.acc1.balance:.2f}\n")
+           
+           # Should not work
+        self.assertFalse(self.acc1.deposit(-10)) 
+        self.assertEqual(self.acc1.balance, 1500000.0)
+        print(f" New account balance: ${self.acc1.balance:.2f}\n")
         
-        self.assertEqual(self.account4.balance, 2700)
-        self.assertFalse(withdrawlTest2)
-        self.assertFalse(withdrawlTest3)
-        # printing out the balances after the tests if debug is true
+    # test withdrawl
+    def testWithdrawl(self):
+        # Should work and remove money from acc1
+        self.acc1.withdraw(500000)
+        self.assertEqual(self.acc1.balance, 500000.0)
+        print(f" New account balance: ${self.acc1.balance:.2f}\n")
+        
+        # Should be equal to the first withdrawl
+        self.acc1.withdraw(2000000)
+        self.assertEqual(self.acc1.balance, 500000)
+        print(f" New account balance: ${self.acc1.balance:.2f}\n")
+        
+    # test overdraft process 
+    def testOverdraft(self):
+        self.acc1.withdraw(1000001)
+        self.assertEqual(self.acc1.balance, -1.0)
         if TestBankAccount.debug:
-            print("\nTesting Withdraw")
-            print("First Account Balance After Withdraw", self.account4.balance)
-            print("Second Account Balance After Withdraw ", self.account5.balance)
+            print("Testing overdraft")
             
+        overdraft = self.acc1.getOverdraft()
+        balance = self.acc1.getBalance()
+        print("Amount of times of overdrafted: %d" % (overdraft))
+        print("New Balance: %d" % (balance))
         
+    # testing special method equality    
+    def test_eq_(self):
+        if TestBankAccount.debug:
+            print("Testing equality")
+        self.assertTrue(self.account4 == self.account4)
+        self.assertFalse(self.account5 == self.account4)
+       
+    # testing special method inequality 
+    def test_neq(self):
+        if TestBankAccount.debug:
+            print("Testing inequality")
+        self.assertTrue(self.account4 != self.account5)
+        self.assertFalse(self.account5 != self.account5)
         
         
 if __name__ == '__main__':
