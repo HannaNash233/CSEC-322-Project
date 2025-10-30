@@ -14,11 +14,17 @@ class Client:
     
     def getFirstName(self):
         pass
+
+    def getLastName(self):
+        return self.lastName
+        pass
     
     def getAddress(self):
+        return self.address
         pass
     
     def getPhoneNum(self):
+        return self.PhoneNum
         pass
     
     def getAccountType(self):
