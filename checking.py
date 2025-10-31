@@ -25,12 +25,14 @@ class CheckingAccount:
         pass
     
     def printTransactions(self):
+        print("Transaction # %d, amount $%.2f, date %s type: %s" % (self._tNumber, self._amount, self._date, self._tType))
         pass
     
     def writeTransactions(self, filename):
         pass
     
     def readTransactions(self, filename):
+        
         pass
     
     
