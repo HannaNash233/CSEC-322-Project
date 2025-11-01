@@ -29,13 +29,21 @@ class Client:
     
     def closeAccount(self, typeAccount):
         pass
-    
+
+    # Sets the client's first name.
     def setFirst(self, firstName):
-        pass
-    
+        self.first = firstName
+
+    # Set the client's last name.
+    def setLast(self, lastName):
+        self._last = lastName
+
+    # Set the client's address
     def setAddress(self, address):
-        pass
-    
+        self._address = address
+
+    # Set the client's phone number
     def setPhoneNum(self, phoneNum):
-        pass
+        self._phoneNum = phoneNum
+
     
