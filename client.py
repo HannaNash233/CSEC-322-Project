@@ -15,11 +15,17 @@ class Client:
     def getFirstName(self):
         pass
     
+    def getLastName(self):
+        return self.lastName
+        
+    
     def getAddress(self):
-        pass
+        return self.address
+        
     
     def getPhoneNum(self):
-        pass
+        return self.PhoneNum
+        
     
     def getAccountType(self):
         pass
@@ -47,3 +53,4 @@ class Client:
         self._phoneNum = phoneNum
 
     
+
