@@ -100,44 +100,9 @@ class SavingsAccount:
             return False
         
 
-    # Transfer funds from this SavingsAccount (the source) to another BankAccount (the destination).
-    # @param toAccount: The destination account object.
-    # @param amount: The amount to transfer.
-    # @return: True if the transfer is fully successful, and False otherwise.
+    
     def printTransactions(self):
-        print("\n Initiating Transfer from Account %d to Account %d: " % (self.getAccountNumber(), toAccount.getAccountNumber()))
-
-        # Validate the transfer amount
-        if amount <= 0:
-            print("Transfer denied: The amount must be positive and greater than zero.")
-            return False
-
-        # Deny a transfer to the same account
-        if self is toAccount:
-            print("Transfer denied: Cannot transfer to the same account.")
-            return False
-
-        # Check for sufficient funds; transferred funds must be fully covered by the current balance.
-        if self._balance < amount:
-            print("Transfer failed: Insufficient funds; %.2f available for transfer of $%.2f" % (self._balance, amount)) 
-            print("Transfers from Savings Accounts require the amount to be fully covered by the current balance.")
-            return False
-
-        # Withdraw the amount from the source account
-        successful_withdrawal = self.withdraw(amount)
-
-        # Check if the withdrawal was successful
-        if not successful_withdrawal:
-             # Failure check 
-             print("Transfer failed: Internal withdrawal error from the source account.")
-             return False
-
-        # Deposit the amount into the destination account
-        toAccount.deposit(amount)
-        
-        # Final print statement if the transfer is successful 
-        print("Transfer complete: $%.2f successfully moved from Account %d to Account %d" % (amount, self.getAccountNumber(), toAccount.getAccountNumber()))
-        return True
+        pass
 
     
     def writeTransactions(self, filename):
@@ -145,4 +110,5 @@ class SavingsAccount:
     
     def readTransactions(self, filename):
         pass    
+
 
