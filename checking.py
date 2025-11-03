@@ -7,7 +7,7 @@
 
 from AES_CBC import *
 from random import randint
-from transaction import getTNumber(self), getTType(self), getAmount(self), getDate(self)
+
 DEBUG = False
 messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
 "\t"]
