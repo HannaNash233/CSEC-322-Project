@@ -11,15 +11,20 @@ class Client:
     VALID_STATES = {"VA", "MD", "NJ", "PA", "DE", "NC", "WV", "DC"}
     
     # Constructs a client.
-    # @param firstName: The first name of the client.
-    # @param lastName: The last name of the client.
-    # @param phoneNum: The client's phone number.
-    # @param address: The address of the clent.
-    # @require: The length of the first name has to be between 1 and 25 with no special characters.
-    # @require: The length of the last name has to be between 1 and 40 with no special characters.
-    # @require: The phone number must be all numeric digits with a length of 10 and it must not start with "0", "1", ior "2"
-    # @require The street and city cannot be empty and both must have no special characters and a max length of 30. The state abbreviation must be one listed in valid states.
-    def __init__(self, firstName, lastName, phoneNum, address):
+    
+    # @param firstName: The first name of the client
+    # @param lastName: The last name of the client
+    # @param phoneNum: The client's phone number
+    # @param address: A tuple containing the street, city, and state
+    # @param accountType: "Checking" or "Savings"
+    
+    # @require: firstName and lastName contain only letters and correct length
+    # @require: phoneNum is 10 digits and cannot start with 0, 1, or 2
+    # @require: street and city are nonempty strings with no special characters
+    # @require: state is in VALID_STATES
+    # @ensure Client receives a unique client number and one account of chosen type
+    
+    def __init__(self, firstName, lastName, phoneNum, address, accountType):
         assert firstName.isalpha() and 1 <= len(firstName) <= 25
         assert lastName.isalpha() and 1 <= len(lastName) <= 40
         assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
@@ -27,6 +32,7 @@ class Client:
         assert street and len(street) <= 30 and street.replace(" ","").isalnum()
         assert city and len(city) <= 30 and city.replace(" ","").isalnum()
         assert state in Client.VALID_STATES
+        assert accountType in {"Checking", "Savings"}, "Account type must be 'Checking' or 'Savings'"
         
         self._firstName = firstName
         self._lastName = lastName
@@ -35,7 +41,8 @@ class Client:
         self._clientNum = Client._NEXTCLIENTNUMBER
         Client._NEXTCLIENTNUMBER += 1
         self.accounts = []        
-    
+
+    # Getters
     def getClientNumber(self):
         return self._clientNum
     
@@ -49,13 +56,13 @@ class Client:
     def getAddress(self):
         return self._address
         
-    
     def getPhoneNum(self):
         return self._phoneNum
         
     def getAccountType(self):
         pass
     
+    # Account management
     def openAccount(self, typeAccount):
         pass
     
@@ -78,5 +85,10 @@ class Client:
     def setPhoneNum(self, phoneNum):
         self._phoneNum = phoneNum
     
+    # Print method
+    def printAccounts(self):
+        pass
+    
+
 
 
