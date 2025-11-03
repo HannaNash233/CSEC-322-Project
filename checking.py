@@ -41,12 +41,12 @@ class CheckingAccount:
     
     def writeTransactions(self, filename):
     transList = []
-    
+    #make sure account has an assert
     if (self._accountType == "checkings"):
         outFile = open("checkings.txt", "wb")
     else:
         outFile = open("savings.txt", "wb")
-# For each message in the list:
+
    for i in range (len(self._transactions)):
        message = str(self._transactions[i])
        translist.append(i)
@@ -63,7 +63,7 @@ class CheckingAccount:
     index = randint(0, extenderLength)
     message = message + messageExtenders[index]
 # close the output file
-    outFile.close()
+    outFile.close() 
 
 
         
@@ -71,24 +71,22 @@ class CheckingAccount:
     
     def readTransactions(self, filename):
 
-    key = b'MySuperSecretKey1222222222222222'
-    print("The length of the key is %d bytes" % len(key))
-# Initialization vector (Ensure the IV is 16 bytes)
-    iv = b'MySuperSecretIV0'
-    print("The length of the Initialization Vector is %d bytes" % len(iv))
-# Open the input file to read the encrypted data
-    inFile = open("testOutput.txt", "rb")
-# read in the the file
+
+    if (self._accountType == "checkings"):
+        outFile = open("checkings.txt", "wb")
+    else:
+        outFile = open("savings.txt", "wb")
+# read in the file
     line = inFile.readline()
     line = line.rstrip()
     line= line.decode()
     
     while line != "" :
-    length = int(line)
-    data = inFile.read(length)
-    inFile.readline()
-    result = decrypt_AES_CBC(data, key, iv)
-    line = inFile.readline().rstrip().decode()
+        length = int(line)
+        data = inFile.read(length)
+        inFile.readline()
+        result = decrypt_AES_CBC(data, key, iv)
+        line = inFile.readline().rstrip().decode()
     if DEBUG:
     print("decoded data", result)
     print("Line is: %s:" % (line))
