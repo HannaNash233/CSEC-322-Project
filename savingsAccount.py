@@ -15,6 +15,7 @@ class SavingsAccount:
     def deposit(self, amount):
         pass
 
+    
     # Calculates and applies the monthly 4.0% annual interest.
     # @return: True if the interest was calculated and applied, and False otherwise.
     def calculateInterest(self):
@@ -41,6 +42,7 @@ class SavingsAccount:
         else:
             print("No interest applied to Savings Account %d due to negative balance." % (self.getAccountNumber()))
             return False
+
     
     # Handles withdrawals, including checks for debt limits and applying tiered overdraft fees.
     # @param amount: The amount to withdraw.
@@ -67,43 +69,80 @@ class SavingsAccount:
             
             print("Standard withdrawal complete. New Balance: %.2f" % (self._balance))
             return True
-        
+
     
+    # 
+    # 
     def transfer(self, fromAccount, amount):
         # If fromAccount tries to make a transfer to itself, deny the transfer and return false
-    if fromAccount is self:
-      print("Transfer denied: Cannot transfer to the same account.")
-      return False
-
-    # If the amount being transfered is negative or equal to 0, print a message to let the user know
-    # that the amount being transferred needs to be positive, and return false
-    if amount <= 0:
-      print("Transfer denied: Amount must be positive.")
-      return False
-
-    # Create a variable to store the successful withdrawal
-    successfulWithdrawal = fromAccount.withdraw(amount)
-
-    # If the withdrawal is successful, deposit the specified amount, and return true
-    if successfulWithdrawal:
-      self.deposit(amount) 
-      return True
-
-    # If the withdrawal does not meet the proper conditions, print a message to let the user know
-    # that the transfer failed, and return false
-    else:
-      print("Transfer failed: Withdrawal from the source account was denied.")
-      return False
+        if fromAccount is self:
+            print("Transfer denied: Cannot transfer to the same account.")
+            return False
+    
+        # If the amount being transfered is negative or equal to 0, print a message to let the user know
+        # that the amount being transferred needs to be positive, and return false
+        if amount <= 0:
+            print("Transfer denied: Amount must be positive.")
+            return False
+    
+        # Create a variable to store the successful withdrawal
+        successfulWithdrawal = fromAccount.withdraw(amount)
+    
+        # If the withdrawal is successful, deposit the specified amount and return true
+        if successfulWithdrawal:
+            self.deposit(amount) 
+            return True
+    
+        # If the withdrawal does not meet the proper conditions, print a message to let the user know
+        # that the transfer failed, and return false
+        else:
+            print("Transfer failed: Withdrawal from the source account was denied.")
+            return False
+        
 
     # Transfer funds from this SavingsAccount (the source) to another BankAccount (the destination).
     # @param toAccount: The destination account object.
     # @param amount: The amount to transfer.
     # @return: True if the transfer is fully successful, and False otherwise.
     def printTransactions(self):
-        pass
+        print("\n Initiating Transfer from Account %d to Account %d: " % (self.getAccountNumber(), toAccount.getAccountNumber()))
+
+        # Validate the transfer amount
+        if amount <= 0:
+            print("Transfer denied: The amount must be positive and greater than zero.")
+            return False
+
+        # Deny a transfer to the same account
+        if self is toAccount:
+            print("Transfer denied: Cannot transfer to the same account.")
+            return False
+
+        # Check for sufficient funds; transferred funds must be fully covered by the current balance.
+        if self._balance < amount:
+            print("Transfer failed: Insufficient funds; %.2f available for transfer of $%.2f" % (self._balance, amount)) 
+            print("Transfers from Savings Accounts require the amount to be fully covered by the current balance.")
+            return False
+
+        # Withdraw the amount from the source account
+        successful_withdrawal = self.withdraw(amount)
+
+        # Check if the withdrawal was successful
+        if not successful_withdrawal:
+             # Failure check 
+             print("Transfer failed: Internal withdrawal error from the source account.")
+             return False
+
+        # Deposit the amount into the destination account
+        toAccount.deposit(amount)
+        
+        # Final print statement if the transfer is successful 
+        print("Transfer complete: $%.2f successfully moved from Account %d to Account %d" % (amount, self.getAccountNumber(), toAccount.getAccountNumber()))
+        return True
+
     
     def writeTransactions(self, filename):
         pass
     
     def readTransactions(self, filename):
         pass    
+
