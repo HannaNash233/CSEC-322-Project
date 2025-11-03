@@ -6,27 +6,53 @@
 
 class Client:
     
+    # Attributes
+    _NEXTCLIENTNUMBER = 100
+    VALID_STATES = {"VA", "MD", "NJ", "PA", "DE", "NC", "WV", "DC"}
+    
+    # Constructs a client.
+    # @param firstName: The first name of the client.
+    # @param lastName: The last name of the client.
+    # @param phoneNum: The client's phone number.
+    # @param address: The address of the clent.
+    # @require: The length of the first name has to be between 1 and 25 with no special characters.
+    # @require: The length of the last name has to be between 1 and 40 with no special characters.
+    # @require: The phone number must be all numeric digits with a length of 10 and it must not start with "0", "1", ior "2"
+    # @require The street and city cannot be empty and both must have no special characters and a max length of 30. The state abbreviation must be one listed in valid states.
     def __init__(self, firstName, lastName, phoneNum, address):
-        pass
+        assert firstName.isalpha() and 1 <= len(firstName) <= 25
+        assert lastName.isalpha() and 1 <= len(lastName) <= 40
+        assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
+        street, city, state = address
+        assert street and len(street) <= 30 and street.replace(" ","").isalnum()
+        assert city and len(city) <= 30 and city.replace(" ","").isalnum()
+        assert state in Client.VALID_STATES
+        
+        self._firstName = firstName
+        self._lastName = lastName
+        self._phoneNum = phoneNum
+        self._address = address
+        self._clientNum = Client._NEXTCLIENTNUMBER
+        Client._NEXTCLIENTNUMBER += 1
+        self.accounts = []        
     
     def getClientNumber(self):
-        pass
+        return self._clientNum
     
     def getFirstName(self):
-        pass
+        return self._firstName
     
     def getLastName(self):
-        return self.lastName
+        return self._lastName
         
     
     def getAddress(self):
-        return self.address
+        return self._address
         
     
     def getPhoneNum(self):
-        return self.PhoneNum
+        return self._phoneNum
         
-    
     def getAccountType(self):
         pass
     
@@ -38,7 +64,7 @@ class Client:
 
     # Sets the client's first name.
     def setFirst(self, firstName):
-        self.first = firstName
+        self._first = firstName
 
     # Set the client's last name.
     def setLast(self, lastName):
@@ -51,6 +77,6 @@ class Client:
     # Set the client's phone number
     def setPhoneNum(self, phoneNum):
         self._phoneNum = phoneNum
-
     
+
 
