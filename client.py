@@ -88,7 +88,6 @@ class Client:
     # Print method
     def printAccounts(self):
         pass
-    
 
 
 
