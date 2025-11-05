@@ -4,17 +4,16 @@
 #
 # Date: 10/29/25
 
-class SavingsAccount:
+class SavingsAccount (BankAccount):
+    INTEREST_RATE = 0.04
     
-    def __init__(self, initBalance=0.0):
-        pass
+    def __init__(self, firstName, lastName, initBalance=0.0, bType="Savings"):
+        super().__init__(firstName, lastName, initBalance)
+        self.type = bType  
     
     def displayDetails(self):
-        pass
-    
-    def deposit(self, amount):
-        pass
-
+        details = ("First Name: %s \n Last Name: %s \n Balance: %0.2f\n Type: %s" % (self.firstName, self.lastName, self.balance, self.type))
+        return details 
     
     # Calculates and applies the monthly 4.0% annual interest.
     # @return: True if the interest was calculated and applied, and False otherwise.
@@ -110,5 +109,6 @@ class SavingsAccount:
     
     def readTransactions(self, filename):
         pass    
+
 
 
