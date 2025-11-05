@@ -73,13 +73,59 @@ class CheckingAccount(BankAccount):
         return True
     
     def printTransactions(self):
-        pass
+        print("Transaction # %d, amount $%.2f, date %s type: %s" % (self._tNumber, self._amount, self._date, self._tType))
     
     def writeTransactions(self, filename):
-        pass
-    
-    def readTransactions(self, filename):
-        pass
+    transList = []
+    #make sure account has an assert
+    if (self._accountType == "checkings"):
+        outFile = open("checkings.txt", "wb")
+    else:
+        outFile = open("savings.txt", "wb")
+
+   for i in range (len(self._transactions)):
+       message = str(self._transactions[i])
+       translist.append(i)
+       
+    result = encrypt_AES_CBC(message, key, iv)
+
+# Write the length of the message to the file.
+    outFile.write(str(len(result)).encode())
+    outFile.write(b"\n")
+# Write the encrypted message and newline to the file
+    outFile.write(result)
+    outFile.write(b"\n")
+# Append a randomly selected extender to the message
+    index = randint(0, extenderLength)
+    message = message + messageExtenders[index]
+# close the output file
+    outFile.close() 
 
     
+    def readTransactions(self, filename):
+
+
+    if (self._accountType == "checkings"):
+        outFile = open("checkings.txt", "wb")
+    else:
+        outFile = open("savings.txt", "wb")
+# read in the file
+    line = inFile.readline()
+    line = line.rstrip()
+    line= line.decode()
+    
+    while line != "" :
+        length = int(line)
+        data = inFile.read(length)
+        inFile.readline()
+        result = decrypt_AES_CBC(data, key, iv)
+        line = inFile.readline().rstrip().decode()
+    if DEBUG:
+    print("decoded data", result)
+    print("Line is: %s:" % (line))
+# Close the input file
+    inFile.close()
+
+        
+
 
