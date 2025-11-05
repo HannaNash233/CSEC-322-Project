@@ -5,9 +5,12 @@
 # Date: 10/29/25
 
 import unittest 
-from checkingAccount import CheckingAccount
+from client import Client
 
-class TestCheckingAccount(unittest.TestCase):
+class TestClient(unittest.TestCase):
+    
+    def setUp(self):
+        pass
     
     def testOpenAccount(self):
         pass
