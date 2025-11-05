@@ -60,14 +60,23 @@ class Client:
         return self._phoneNum
         
     def getAccountType(self):
-        pass
+        return self.accountType
     
-    # Account management
-    def openAccount(self, typeAccount):
-        pass
+    def openAccount(self, account):
+        assert isinstance(account, BankAccount)
+        #acctType = typeAccount.getType()
+        if account.getType() == "Savings":
+            savingsAccount = SavingsAccount(self.balance)
+            self.accountList.append(savingsAccount)
+        elif account.getType() == "Checking":
+            checkingAccount = CheckingAccount(self.balance)
+            self.accountList.append(checkingAccount)
     
-    def closeAccount(self, typeAccount):
-        pass
+     def closeAccount(self, account):
+        assert isinstance(account, BankAccount)
+        accountBalance = account.balance
+        typeaccount.withdraw(accountBalance)
+        self.accountList.pop(account)
 
     # Sets the client's first name.
     def setFirst(self, firstName):
@@ -88,6 +97,7 @@ class Client:
     # Print method
     def printAccounts(self):
         pass
+
 
 
 
