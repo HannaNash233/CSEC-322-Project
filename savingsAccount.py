@@ -32,6 +32,12 @@ class SavingsAccount (BankAccount):
     # Calculates and applies the monthly 4.0% annual interest.
     # @return: True if the interest was calculated and applied, and False otherwise.
     def calculateInterest(self):
+        assert self.INTEREST_RATE > 0, "Interest rate must be positive for calculation."
+
+        # Store the initial state for assertion
+        initial_balance = self._balance
+        initial_transaction_count = len(self._transactions)
+        
         # Calculate the monthly interest rate
         monthly_rate = self.INTEREST_RATE / 12.0
     
@@ -50,10 +56,22 @@ class SavingsAccount (BankAccount):
             BankAccount._nextTransactionNumber += 1
             
             print("Interest Applied: %.2f added to Savings Account %d." % (interestEarned, self.getAccountNumber()))
+
+            # ASSERTIONS FOR SUCCESS
+            # ASSERTION: The new balance must be the initial balance plus the interest earned.
+            assert self._balance == initial_balance + interestEarned, "The interest calculation failed to update the balance."
+            # ASSERTION: A new transaction must be added.
+            assert len(self._transactions) == initial_transaction_count + 1, "Failed to record the interest transaction."
+            
             return True
         
         else:
-            print("No interest applied to Savings Account %d due to negative balance." % (self.getAccountNumber()))
+            # ASSERTIONS FOR FAILURE
+            # ASSERTION: The balance must not change.
+            assert self._balance == initial_balance, "Balance changed despite no interest being applied."
+            # ASSERTION: The transaction count must not change.
+            assert len(self._transactions) == initial_transaction_count, "Transaction recorded despite no interest being applied."
+            
             return False
 
     
@@ -61,6 +79,12 @@ class SavingsAccount (BankAccount):
     # @param amount: The amount to withdraw.
     # @return: True if the withdrawal is successful, and False otherwise.
     def withdraw(self, amount):
+        assert isinstance(amount, (int, float)) and amount > 0, "Withdrawal amount must be a positive number."
+
+        # Store the initial state for assertion
+        initial_balance = self._balance
+        initial_transaction_count = len(self._transactions)
+        
         # Check to see if the amount requested is positive
         if amount <= 0:
             print("Error: Withdrawal amount must be positive.")
@@ -81,21 +105,50 @@ class SavingsAccount (BankAccount):
             self._balance -= amount
             
             print("Standard withdrawal complete. New Balance: %.2f" % (self._balance))
+
+            # ASSERTIONS FOR SUCCESS
+            assert self._balance == initial_balance - amount, "The withdrawal failed to update the balance correctly."
+            assert len(self._transactions) == initial_transaction_count + 1, "Failed to record the withdrawal transaction."
+            
             return True
 
+        else:
+            # ASSERTIONS FOR FAILURE
+            assert self._balance == initial_balance, "The balance changed despite the insufficient funds."
+            assert len(self._transactions) == initial_transaction_count, "The transaction recorded despite the insufficient funds."
+            
+            return False
+
     
-    # 
-    # 
+    # Transfers a specified amount from one account (source) to the current account (destination).
+    # @param fromAccount: The BankAccount object to withdraw the funds from (the source).
+    # @param amount: The amount to transfer.
+    # @return: True if the transfer is successful, and False otherwise.
     def transfer(self, fromAccount, amount):
+        assert fromAccount is not None, "Source account cannot be None."
+        assert isinstance(amount, (int, float)) and amount > 0, "Transfer amount must be a positive number."
+
+        # Store the initial state of the destination account for assertion
+        initial_self_balance = self._balance
+        initial_self_transactions = len(self._transactions)
+        
         # If fromAccount tries to make a transfer to itself, deny the transfer and return false
         if fromAccount is self:
             print("Transfer denied: Cannot transfer to the same account.")
+            # ASSERTIONS FOR FAILURE
+            assert self._balance == initial_self_balance, "Destination balance changed on self-transfer attempt."
+            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded on self-transfer attempt."
+            
             return False
     
         # If the amount being transfered is negative or equal to 0, print a message to let the user know
         # that the amount being transferred needs to be positive, and return false
         if amount <= 0:
             print("Transfer denied: Amount must be positive.")
+            # ASSERTIONS FOR FAILURE
+            assert self._balance == initial_self_balance, "Destination balance changed on non-positive amount transfer attempt."
+            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded on non-positive amount transfer attempt."
+            
             return False
     
         # Create a variable to store the successful withdrawal
@@ -110,6 +163,10 @@ class SavingsAccount (BankAccount):
         # that the transfer failed, and return false
         else:
             print("Transfer failed: Withdrawal from the source account was denied.")
+            # ASSERTIONS FOR FAILURE
+            assert self._balance == initial_self_balance, "Destination balance changed when source withdrawal failed."
+            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded when source withdrawal failed."
+            
             return False
         
 
@@ -189,6 +246,7 @@ class SavingsAccount (BankAccount):
         # Close the input file
 
         inFile.close() 
+
 
 
 
