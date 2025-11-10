@@ -6,17 +6,32 @@
 
 from bankAccount import BankAccount
 from transaction import Transaction
+from random import randint
+
+# Import for encryption/decryption
+from AES_CBC import *
+
+DEBUG = False 
+MESSAGE_EXTENDERS = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats", "\t"]
+EXTENDER_LENGTH = len(MESSAGE_EXTENDERS) - 1
+
+# Key and IV placeholders from AES Encrypt Example
+KEY = b'MySuperSecretKey1222222222222222'  
+IV = b'MySuperSecretIV0'
 
 class CheckingAccount(BankAccount):
     
     # Attributes
     INTEREST_RATE = 0.015
+    ACCOUNT_TYPE = "Checking"
     
-     def __init__(self, initBalance=0.0): #Me
+    def __init__(self, initBalance=0.0): #Me
+        super().__init__(initBalance)
         #Initialize the account with an initial balance and empty transaction list
         assert isinstance(initBalance, (int, float))
         self.balance = float(initBalance)
         self.transactions = []
+
         self.transactions.append(f"Account created with balance: ${self.balance:.2f}")
     
     def displayDetails(self): #Me
@@ -44,6 +59,7 @@ class CheckingAccount(BankAccount):
     
     # @override: Apply 1.5% interest rate
     # @require: balance > 0 to earn interest
+    # @return True of the interest is successfully calculated, and False otherwise
     def calculateInterest(self):
         if self.balance <= 0:
             return False
@@ -61,6 +77,7 @@ class CheckingAccount(BankAccount):
     # @require: amount > 0
     # @return True if the withdrawl is successful, and False otherwise
     def withdraw(self, amount):
+        assert isinstance(amount, (int, float))
         assert amount > 0, "Withdrawal amount must be positive."
         
         if amount > self.balance:
@@ -70,62 +87,110 @@ class CheckingAccount(BankAccount):
         self.balance -= amount
         self.transactions.append(Transaction(self.transactionNumber, "withdrawal", amount))
         self.transactionNumber += 1
+        print("Transaction Complete")
         return True
-    
+
+    # @override: Print all checking account transactions
+    # @ensure: all transactions are printed
     def printTransactions(self):
-        print("Transaction # %d, amount $%.2f, date %s type: %s" % (self._tNumber, self._amount, self._date, self._tType))
+        print("\n Transactions for Checking Account %d" % (self.accountNumber))
     
-    def writeTransactions(self, filename):
-    transList = []
-    #make sure account has an assert
-    if (self._accountType == "checkings"):
-        outFile = open("checkings.txt", "wb")
-    else:
-        outFile = open("savings.txt", "wb")
-
-   for i in range (len(self._transactions)):
-       message = str(self._transactions[i])
-       translist.append(i)
-       
-    result = encrypt_AES_CBC(message, key, iv)
-
-# Write the length of the message to the file.
-    outFile.write(str(len(result)).encode())
-    outFile.write(b"\n")
-# Write the encrypted message and newline to the file
-    outFile.write(result)
-    outFile.write(b"\n")
-# Append a randomly selected extender to the message
-    index = randint(0, extenderLength)
-    message = message + messageExtenders[index]
-# close the output file
-    outFile.close() 
-
+        # Check if the list of transactions is empty
+        if not self.transactions:
+            print("No transactions recorded.")
+            return
     
-    def readTransactions(self, filename):
-
-
-    if (self._accountType == "checkings"):
-        outFile = open("checkings.txt", "wb")
-    else:
-        outFile = open("savings.txt", "wb")
-# read in the file
-    line = inFile.readline()
-    line = line.rstrip()
-    line= line.decode()
+        # Iterate through the list of transactions and print them
+        for transaction in self.transactions:
+            print(transaction)
     
-    while line != "" :
-        length = int(line)
-        data = inFile.read(length)
-        inFile.readline()
-        result = decrypt_AES_CBC(data, key, iv)
-        line = inFile.readline().rstrip().decode()
-    if DEBUG:
-    print("decoded data", result)
-    print("Line is: %s:" % (line))
-# Close the input file
-    inFile.close()
+        # Write all checking account transactions to "checking.txt"
+        # The data must be encrypted
+        # @ensure: all transactions are written and encrypted to "checking.txt"
+        def writeTransactions(self):
+            filename = "checking.txt"
+            
+            if not self.transactions:
+                print(f"No transactions to write for Account {self.accountNumber}.")
+                return
+                
+            try:
+                with open(filename, "wb") as outFile:
+                    for transaction in self.transactions:
+                        # Get the string representation of the transaction
+                        message = str(transaction)
+                        
+                        # Encrypt the data
+                        result = encrypt_AES_CBC(message, KEY, IV)
+    
+                        # Write the length of the encrypted message
+                        outFile.write(str(len(result)).encode())
+                        outFile.write(b"\n")
+                        
+                        # Write the encrypted message
+                        outFile.write(result)
+                        outFile.write(b"\n")
+                        
+                        # Append a randomly selected extender
+                        index = randint(0, EXTENDER_LENGTH)
+                        extender = MESSAGE_EXTENDERS[index]
+                        outFile.write(extender.encode('utf-8'))
+                        outFile.write(b"\n")
+                
+                if DEBUG:
+                    print(f"Successfully encrypted and wrote {len(self.transactions)} transactions to {filename}")
+            except Exception as e:
+                print(f"An error occurred while writing transactions: {e}")
+    
+    
+        # Read all checking account transactions from "checking.txt"
+        # The data must be decrypted before it is printed
+        # @ensure: all transactions from "checking.txt" are read and printed
+        def readTransactions(self):
+            filename = "checking.txt"
+            
+            try:
+                # Open the file for reading bytes
+                inFile = open(filename, "rb")
+                print(f"\n--- Reading and Decrypting Transactions from {filename} ---")
+                
+                # Read the length line
+                line = inFile.readline()
+                line = line.rstrip()
+                line = line.decode()
+                
+                # Loop while the length line is not empty
+                while line != "":
+                    # Convert the length string to an integer
+                    length = int(line)
+                    
+                    # Read the encrypted data
+                    data = inFile.read(length)
+                    
+                    # Read the newline after encrypted data (discard)
+                    inFile.readline()
+                    
+                    # Decrypt the data
+                    result = decrypt_AES_CBC(data, KEY, IV)
+                    
+                    # Print the decrypted transaction
+                    print(result)
+    
+                    # Read and discard the extender line
+                    inFile.readline()
+                    
+                    # Read the length of the next message to continue/end the loop
+                    line = inFile.readline()
+                    line = line.rstrip()
+                    line = line.decode()
+                
+                # Close the input file
+                inFile.close()
+    
+            except FileNotFoundError:
+                print(f"File '{filename}' not found.")
 
         
+
 
 
