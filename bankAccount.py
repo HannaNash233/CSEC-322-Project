@@ -13,8 +13,6 @@ class BankAccount:
   OVERDRAFT_FEE = 20.00
   INTEREST_RATE = 0.075
   _NEXTACCOUNTNUMBER = 1000
-  
-  
 
   
   # Constructs a bank account.
@@ -23,17 +21,17 @@ class BankAccount:
   #@param initBalance: The initial bank account balance (float)
   # @require: The length of the first name has to be in between 1 and 25
   # @require: The length of the last name has to be in between 1 and 40
-  def __init__(self, firstName, lastName, initBalance=0.0):
-    assert firstName.isalpha and len(firstName) >= 1 and len(firstName) <= 25
-    assert lastName.isalpha and len(lastName) >= 1 and len(lastName) <= 40    
-    self.firstName = firstName
-    self.lastName = lastName
+  def __init__(self, initBalance=0.0):
+    assert isinstance(initBalance, (int, float))
+    assert initBalance >= 0.0, "Initial balance cannot be negative."
     self.balance = float(initBalance)
     self.accountNumber = BankAccount._NEXTACCOUNTNUMBER
     BankAccount._NEXTACCOUNTNUMBER += 1
     self.transactionNumber = 100
     self.transactions = []
     self.overdrawn = 0
+    
+    self.accountType = "Base" # Placeholder, will be overriden by Checking/Savings
 
 
   # Returns a string that contains the account details (first & last name, account number, balance, overdrawn counter)
@@ -48,6 +46,8 @@ class BankAccount:
   #@param amount: The amount being deposited (float)
   #@return True if the deposit is successful, and False otherwise
   def deposit(self, amount):
+    assert isinstance(amount,(int, float))
+    assert amount > 0, "Deposit amount must be positive."
     if amount <= 0:
       return False
     else:
@@ -78,6 +78,8 @@ class BankAccount:
   #@param amount: The amount being withdrawn (float)
   #@return True if the withdrawl is successful, and False otherwise
   def withdraw(self, amount):
+    assert isinstance(amount, (int, float))
+    assert amount > 0, "Withdrawal amount must be positive."
     # creating a variable to check the balance + 250
     withdrawCheck = self.balance + 250 
     # checking if the amount is less than the withdraw check
@@ -128,6 +130,8 @@ class BankAccount:
   #@param amount: The amount being transfered
   #@return True if the transfer is successful, and False otherwise
   def tranfer(self, fromAccount, amount):
+    assert isinstance(amount, (int, float))
+    assert amount > 0, "Transfer amount must be positive."
     # If fromAccount tries to make a transfer to itself, deny the transfer and return false
     if fromAccount is self:
       print("Transfer denied: Cannot transfer to the same account.")
@@ -168,12 +172,7 @@ class BankAccount:
     for transaction in self.transactions:
       print(transaction)
       
-  # initializing the getters 
-  def getFirst(self):
-      return self.firstName
-    
-  def getLast(self):
-      return self.lastName 
+  # initializing the getters (removed getFirst and getLast)
       
   def getAccountNumber(self):
       return self.accountNumber  
@@ -190,12 +189,7 @@ class BankAccount:
   def getOverdraft(self):
       return self.overdrawn
     
-  # initalizing the setters
-  def setFirst(self, first):
-      self.firstName = first
-  
-  def setLast(self, last):
-      self.lastName = last
+  # removed setters - setFirst and setLast
       
   # creating the string representation 
   def __str__(self):
