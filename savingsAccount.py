@@ -21,9 +21,9 @@ iv = b'MySuperSecretIV7'
 class SavingsAccount (BankAccount):
     INTEREST_RATE = 0.04
     
-    def __init__(self, firstName, lastName, initBalance=0.0, bType="Savings"):
+    def __init__(self, firstName, lastName, initBalance=0.0):
         super().__init__(firstName, lastName, initBalance)
-        self.type = bType  
+        self.type = "Saving"  
     
     def displayDetails(self):
         details = ("First Name: %s \n Last Name: %s \n Balance: %0.2f\n Type: %s" % (self.firstName, self.lastName, self.balance, self.type))
@@ -246,6 +246,7 @@ class SavingsAccount (BankAccount):
         # Close the input file
 
         inFile.close() 
+
 
 
 
