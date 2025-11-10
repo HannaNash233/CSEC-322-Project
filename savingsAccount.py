@@ -164,7 +164,7 @@ class SavingsAccount (BankAccount):
     
 
     # Create a list to store the transactions, encrypt the list, return a list.
-  '''def writeTransactions(self, filename): #Me
+  def writeTransactions(self, filename): #Me
         # Create a message string to encrypt
         transList = [] #the self.transactions
         # message = 
@@ -231,7 +231,7 @@ class SavingsAccount (BankAccount):
             
         # Close the input file
 
-        inFile.close() '''
+        inFile.close() 
         
   def __repr__(self):
     return ("SavingsAccount(balance = %d)" % self.balance)  
