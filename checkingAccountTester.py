@@ -1,4 +1,11 @@
-# checkingAccountTester.py
+# checkingsAccountTester.py
+# 
+# Author(s): 
+#
+# Date: 10/29/25
+
+
+    # checkingAccountTester.py
 #
 # Authors:
 #
@@ -6,10 +13,10 @@
 #
 # This is the testing module for the checking account class.
 
+
+from checkingAccount import CheckingAccount
 import unittest
 import os
-from checkingAccount import CheckingAccount
-
 
 class testCheckingAccount(unittest.TestCase):
     
@@ -40,7 +47,7 @@ class testCheckingAccount(unittest.TestCase):
         
     def testDisplayDetails(self):
         # Print debug message if DEBUG is True
-        if TestCheckingAccount.DEBUG:
+        if testCheckingAccount.DEBUG:
             print("\nTesting displayDetails:")
 
         # Record a transaction to ensure there is history to display
@@ -92,7 +99,7 @@ class testCheckingAccount(unittest.TestCase):
         self.checkAccount2.deposit(50.00)
         
         # Act
-        self.checkAccount2.writeTransactions()
+        self.checkAccount2.writeTransactions("checking.txt")
         
         # Assert
         self.assertTrue(os.path.exists("checking.txt"))
@@ -104,7 +111,7 @@ class testCheckingAccount(unittest.TestCase):
         tempAccount.transactions = [] 
         
         # Act
-        tempAccount.writeTransactions()
+        tempAccount.writeTransactions("checking.txt")
         
         # Assert
         self.assertFalse(os.path.exists("checking.txt"))
@@ -113,10 +120,10 @@ class testCheckingAccount(unittest.TestCase):
     def test_file_read_success(self):
         # Arrange: Ensure a file exists
         self.checkAccount2.deposit(50.00)
-        self.checkAccount2.writeTransactions()
+        self.checkAccount2.writeTransactions("checking.txt")
         
         # Act: Verify method runs without error
-        self.checkAccount2.readTransactions()
+        self.checkAccount2.readTransactions("checking.txt")
         
     # Test reading when file not found
     def test_file_read_file_not_found(self):
@@ -125,7 +132,8 @@ class testCheckingAccount(unittest.TestCase):
             os.remove("checking.txt")
             
         # Act: Verify method runs without error
-        self.checkAccount2.readTransactions()    
+        self.checkAccount2.readTransactions("checking.txt")    
+
 
 
 if __name__ == '__main__':
