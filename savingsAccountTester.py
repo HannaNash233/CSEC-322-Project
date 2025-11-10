@@ -60,8 +60,47 @@ class TestSavingsAccount(unittest.TestCase):
 
         # Assertion for completeness
         self.assertTrue(True)
+
+
+    def test_checking_client_opened_correctly(self):
+
+        self.assertEqual(len(self.client.versions), 1)
+        self.client.openAccount("checkings")
+        self.assertEqual(len(self.client.versions), 2)
+        
+    def test_savings_client_opened_correctly(self):
+        
+        self.assertEqual(len(self.client.accounts), 1)
+        self.client.openAccount("savings")
+        self.assertEqual(len(self.client.versions), 2)
+
+    def test_fun_client_did_not_open_account(self):
+        self.client.openAccount("fun")
+        self.assertEqual(len(self.client3.accounts), 1)
+
+  def test_close_checking_account(self):
+        
+        self.assertEqual(len(self.client.accountList), 1)
+        self.client.closeAccount("Checking")
+        self.assertEqual(len(self.client.accountList), 0, "Account list should be empty")
+        self.assertEqual(account_to_close.balance, 0, "Account balance should be zeroed")
+
+    def test_close_savings_account(self):
+   
+        self.assertEqual(len(self.client.accountList), 1)
+        self.client.closeAccount("Savings")
+        self.assertEqual(len(self.client2.accountList), 0)
+        self.assertEqual(account_to_close.balance, 0)
+
+    def test_close_account_not_in_list(self):
+       
+        self.assertEqual(len(self.client.accountList), 1) 
+        self.client.closeAccount("fun")
+        self.assertEqual(len(self.client.accountList), 1)
+
         
         
 if __name__ == '__main__':
 
     unittest.main()
+
