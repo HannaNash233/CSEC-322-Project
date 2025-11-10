@@ -8,7 +8,7 @@ from savingsAccount import SavingsAccount
 def setUp(self):
         address = ("168 Pelham Place", "Norfolk", "VA")
         self.client = Client("Cara", "Routh", "7576767679", address, "Checking")
-        
+         self.client2 = Client("Cara", "Routh", "7576767679", address, "Checking")
         # print(self.client.printAccount())
 
 def test_checking_client_opened_correctly(self):
@@ -73,6 +73,87 @@ def test_checking_client_opened_correctly(self):
   
 
 
+
+  def testConstructor(self):
+        # Assert the initial balance is correct
+        self.assertEqual(self.savingsAccount1.balance, 1000.00)
+        # Assert that the initial transaction log entry was created
+        self.assertGreater(len(self.checkAccount1.transactions), 0)
+        
+        # Display details 
+        print("\n--- Test Constructor Details ---")
+        self.checkAccount1.displayDetails()
+
+import unittest
+# Import the class we want to test
+from bank_accounts import SpecificAccount
+
+class TestSpecificAccount(unittest.TestCase):
+
+    # --- Tests for the __init__ method ---
+    
+    def test_init_with_defaults(self):
+        self.SavingsAccount()
+        account = SpecificAccount("John", "Doe")
+        
+        # Check that all attributes are set correctly
+        self.assertEqual(account.firstName, "John")
+        self.assertEqual(account.lastName, "Doe")
+        self.assertEqual(account.balance, 0.0)
+        self.assertEqual(account.type, "Savings") # The default bType
+
+    def test_init_with_specific_values(self):
+        """
+        Test Case 2: Create an account with all args specified.
+        """
+        # Create the account with all args
+        account = SpecificAccount("Jane", "Smith", 150.75, "Checking")
+        
+        # Check that all attributes are set correctly
+        self.assertEqual(account.firstName, "Jane")
+        self.assertEqual(account.lastName, "Smith")
+        self.assertEqual(account.balance, 150.75)
+        self.assertEqual(account.type, "Checking") # The specified bType
+
+    # --- Tests for the displayDetails method ---
+
+    def test_display_details_specific(self):
+        """
+        Test Case 3: Check the output of displayDetails for a specific account.
+        """
+        account = SpecificAccount("Jane", "Smith", 150.75, "Checking")
+        
+        # Define the exact string we expect
+        expected_string = (
+            "First Name: Jane \n "
+            "Last Name: Smith \n "
+            "Balance: 150.75\n "  # Note the 0.2f formatting
+            "Type: Checking"
+        )
+        
+        # Check that the method's return value matches
+        self.assertEqual(account.displayDetails(), expected_string)
+
+    def test_display_details_default(self):
+        """
+        Test Case 4: Check the output of displayDetails for a default account.
+        """
+        account = SpecificAccount("John", "Doe")
+        
+        # Define the exact string we expect
+        expected_string = (
+            "First Name: John \n "
+            "Last Name: Doe \n "
+            "Balance: 0.00\n "  # Note the 0.2f formatting
+            "Type: Savings"
+        )
+        
+        # Check that the method's return value matches
+        self.assertEqual(account.displayDetails(), expected_string)
+
+# This is the "runner" that starts the tests
+if __name__ == '__main__':
+    unittest.main()
     
 
   
