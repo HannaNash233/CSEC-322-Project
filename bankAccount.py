@@ -20,9 +20,8 @@ class BankAccount:
 
   
   # Constructs a bank account.
-  #@param firstName: The first name of the account holder
-  #@param lastName: The last name of the account holder
-  #@param initBalance: The initial bank account balance (float)
+  # @param initBalance: The initial bank account balance (float)
+  # @param bType: Bank account type.
   # @require: The length of the first name has to be in between 1 and 25
   # @require: The length of the last name has to be in between 1 and 40
   def __init__(self, initBalance=0.0, bType = " "):
