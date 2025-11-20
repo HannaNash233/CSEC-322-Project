@@ -9,17 +9,9 @@ from AES_CBC import *
 from random import randint
 
 DEBUG = False
-messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
-"\t"]
-extenderLength = len(messageExtenders) - 1
 
-# Encryption key (Ensure the key is 16, 24, or 32 bytes for AES-128, AES-192, or AES-256)
-key = b'MySuperSecretKey1222222222222222'
-#print("The length of the key is %d bytes" % len(key))
 
-# Initialization vector (Ensure the IV is 16 bytes)
-iv = b'MySuperSecretIV7'
-#print("The length of the Initialization Vector is %d bytes" % len(iv))
+
 
 class CheckingAccount(BankAccount):
     
@@ -83,6 +75,14 @@ class CheckingAccount(BankAccount):
           print("Transaction # %d, amount $%.2f, date %s type: %s" % (self.transactionNumber, self._amount, self._date, self._tType))'''
     
      def writeTransactions(self, filename):
+         key = b'MySuperSecretKey1222222222222222'
+        #print("The length of the key is %d bytes" % len(key))
+
+        # Initialization vector (Ensure the IV is 16 bytes)
+         iv = b'MySuperSecretIV7'
+        #print("The length of the Initialization Vector is %d bytes" % len(iv))
+
+         
           transList = []
     #make sure account has an assert
           if (self.type == "checkings"):
@@ -132,4 +132,5 @@ class CheckingAccount(BankAccount):
 # Close the input file
                outFile.close()
     
+
 
