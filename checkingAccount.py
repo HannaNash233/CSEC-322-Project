@@ -103,8 +103,7 @@ class CheckingAccount(BankAccount):
           outFile.write(result)
           outFile.write(b"\n")
           # Append a randomly selected extender to the message
-          index = randint(0, extenderLength)
-          message = message + messageExtenders[index]
+          
           # close the output file
           outFile.close() 
 
@@ -133,3 +132,4 @@ class CheckingAccount(BankAccount):
 # Close the input file
                outFile.close()
     
+
