@@ -9,7 +9,7 @@ from checkingAccount import CheckingAccount
 from client import Client
 
 # got prints just to see what everything is doing currently 
-class TestClient(unittest.TestCase):    
+class testClient(unittest.TestCase):    
     def setUp(self):
         address1 = ("168 Pelham Place", "Norfolk", "VA")
         address2 = ("167 Main St", "Richmond", "VA") 
@@ -85,4 +85,5 @@ class TestClient(unittest.TestCase):
     
            
 if __name__ == '__main__':
+
     unittest.main()
