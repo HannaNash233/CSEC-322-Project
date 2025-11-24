@@ -15,7 +15,7 @@ from random import randint
 
 
 
-class BankAccount:
+class BankAccount(ABC):
   # Attributes (overdraft fee, interest rate, next available account number)
   OVERDRAFT_FEE = 20.00
   INTEREST_RATE = 0.075
@@ -29,9 +29,12 @@ class BankAccount:
   # @require: The length of the first name has to be in between 1 and 25
   # @require: The length of the last name has to be in between 1 and 40
   def __init__(self, initBalance=0.0, bType = " "):
+    # Preconditions
+    assert isinstance(initBalance, (int, float)), "initBalance must be numeric"
     self.balance = float(initBalance)
-    self.accountNumber = BankAccount._NEXTACCOUNTNUMBER
-    BankAccount._NEXTACCOUNTNUMBER += 1
+    # NOTE: accountNumber will be set by Client (still needs fixed)
+    self.accountNumber = None
+    # Transaction numbering starts at 100 for each account
     self.transactionNumber = 100
     self.transactions = []
     self.overdrawn = 0
