@@ -9,25 +9,21 @@ from transaction import Transaction
 from AES_CBC import *
 from random import randint
 
-
+DEBUG = False
 
 class CheckingAccount(BankAccount):
-     DEBUG = False
-     #messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
-     #"\t"]
-     #extenderLength = len(messageExtenders) - 1
-     
-     # Encryption key (Ensure the key is 16, 24, or 32 bytes for AES-128, AES-192, or AES-256)
-     key = b'MySuperSecretKey1222222222222222'
-     #print("The length of the key is %d bytes" % len(key))
-     
-     # Initialization vector (Ensure the IV is 16 bytes)
-     iv = b'MySuperSecretIV7'
-     #print("The length of the Initialization Vector is %d bytes" % len(iv))     
-    
      INTEREST_RATE = 0.015
      _NEXTACCOUNTNUMBER = 1000
-     OVERDRAFT_FEE = 20.00     
+     OVERDRAFT_FEE = 20.00  
+
+     # Random Encryption key (Ensure the key is 32 bytes)
+     key = os.urandom(32)
+     #print("The length of the key is %d bytes" % len(key))
+     
+     # Random Initialization Vector (Ensure the IV is 16 bytes)
+     iv = os.urandom(16)
+     #print("The length of the Initialization Vector is %d bytes" % len(iv))     
+
      def __init__(self, initBalance=0.0): #Me
         #Initialize the account with an initial balance and empty transaction list
           super().__init__(initBalance)
@@ -166,3 +162,4 @@ class CheckingAccount(BankAccount):
    
           infile.close()    
           
+
