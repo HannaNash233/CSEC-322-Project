@@ -9,7 +9,7 @@
 import unittest
 from savingsAccount import SavingsAccount
 
-class TestSavingsAccount(unittest.TestCase):
+class testSavingsAccount(unittest.TestCase):
     BALANCE1 = 1000
     BALANCE2 = 1500
     BALANCE3 = 80000
@@ -178,5 +178,6 @@ class TestSavingsAccount(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
+
 
 
