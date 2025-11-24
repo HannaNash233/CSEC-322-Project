@@ -27,3 +27,10 @@ class phoneNumber:
   		def __ge__(self, other):
   			result = (self.phoneNum >= other.phoneNum)
   			return result
+
+
+        def getPhoneNum(self):
+  			return self.phoneNum
+  			
+  		def setPhoneNum(self):
+  			self.phoneNum = phoneNum
