@@ -1,0 +1,29 @@
+
+
+class phoneNumber:
+
+    def __init__(self, phoneNum):
+
+    	assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
+        street, city, state = address
+        
+        self._phoneNum = phoneNum
+        
+        
+          # creating the string representation 
+      def __str__(self):
+        return ("Phone Number: %d " % (self.phoneNum))
+        	
+        	
+      def __eq__(self, other):
+        result = (self.phoneNum == other.phoneNum) 
+       	return result
+       	
+  
+  		def __gt__(self, other):
+  			result =  (self.phoneNum > other.phoneNum)
+  			return result  
+  			
+  		def __ge__(self, other):
+  			result = (self.phoneNum >= other.phoneNum)
+  			return result
