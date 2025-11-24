@@ -4,9 +4,12 @@
 #
 # Date: 10/29/25
 
+from bankAccount import BankAccount
+from checkingAccount import CheckingAccount
+from savingsAccount import SavingsAccount
+
 class Client:
     
-    # Attributes
     _NEXTCLIENTNUMBER = 100
     VALID_STATES = {"VA", "MD", "NJ", "PA", "DE", "NC", "WV", "DC"}
     
@@ -24,15 +27,21 @@ class Client:
     # @require: state is in VALID_STATES
     # @ensure Client receives a unique client number and one account of chosen type
     
-    def __init__(self, firstName, lastName, phoneNum, address, accountType):
+    def __init__(self, firstName, lastName, phoneNum, street, city, state):
         assert firstName.isalpha() and 1 <= len(firstName) <= 25
         assert lastName.isalpha() and 1 <= len(lastName) <= 40
         assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
-        street, city, state = address
-        assert street and len(street) <= 30 and street.replace(" ","").isalnum()
-        assert city and len(city) <= 30 and city.replace(" ","").isalnum()
+        assert isinstance(phoneNum, str)
+
+       # street, city, state = address
+        address = street, city, state
+        assert len(street) <= 30
+        assert len(city) <= 30
         assert state in Client.VALID_STATES
-        assert accountType in {"Checking", "Savings"}, "Account type must be 'Checking' or 'Savings'"
+        #assert street and len(street) <= 30 and street.replace(" ","").isalnum()
+        #assert city and len(city) <= 30 and city.replace(" ","").isalnum()
+        #assert state in Client.VALID_STATES
+        #assert accountType in {"Checking", "Savings"}, "Account type must be 'Checking' or 'Savings'"
         
         self._firstName = firstName
         self._lastName = lastName
@@ -48,56 +57,70 @@ class Client:
     
     def getFirstName(self):
         return self._firstName
-    
     def getLastName(self):
         return self._lastName
-        
     
     def getAddress(self):
         return self._address
-        
+    
     def getPhoneNum(self):
         return self._phoneNum
-        
+    
     def getAccountType(self):
-        return self.accountType
+        return self._accountType
     
-    def openAccount(self, account):
-        assert isinstance(account, BankAccount)
+    def getAccounts(self):
+        return self.accounts
+    
+    def printAccounts(self):
+        for account in self.accounts:
+            print(account)
+        
+    
+    def displayDetails(self):
+        print("Current Client: %s %s\n" % (self._firstName, self._lastName))
+        print("Client Number: #%d\n" % (self._clientNum))
+        print("Current Count of Accounts: %d\n" % (len(self.accounts)))
+        self.printAccounts()
+        
+    def openAccount(self, account, balance):
+        assert account in {"Checking", "Savings"}, "Not a valid account"
+        assert balance > 0, "Balance must over zero"
+        #assert isinstance(account, BankAccount)
         #acctType = typeAccount.getType()
-        if account.getType() == "Savings":
-            savingsAccount = SavingsAccount(self.balance)
-            self.accountList.append(savingsAccount)
-        elif account.getType() == "Checking":
-            checkingAccount = CheckingAccount(self.balance)
-            self.accountList.append(checkingAccount)
+        if account == "Savings":
+            account = SavingsAccount(balance)
+            self.accounts.append(account)
+        elif account == "Checking":
+            account = CheckingAccount(balance)
+            self.accounts.append(account)
+            
+        return account
+            
+        
     
-     def closeAccount(self, account):
-        assert isinstance(account, BankAccount)
-        accountBalance = account.balance
-        typeaccount.withdraw(accountBalance)
-        self.accountList.pop(account)
-
-    # Sets the client's first name.
+    def closeAccount(self, account):
+     
+        assert account.getType() in {"Checking", "Savings"}, "Not a valid account"
+       # assert isinstance(account.getType(), ("Savings") or isinstance(account.getType())
+       # assert account != ""
+        
+       # self.accountList.remove(account)
+        accountBalance = account.getBalance()
+       
+        account.withdraw(accountBalance)
+        self.accounts.remove(account)
+        
+        
+        
     def setFirst(self, firstName):
-        self._first = firstName
-
-    # Set the client's last name.
-    def setLast(self, lastName):
-        self._last = lastName
-
-    # Set the client's address
+        self.first = firstName
+    
     def setAddress(self, address):
-        self._address = address
-
-    # Set the client's phone number
+        self._last = lastName
+    
     def setPhoneNum(self, phoneNum):
         self._phoneNum = phoneNum
+        
     
-    # Print method
-    def printAccounts(self):
-        pass
-
-
-
-
+  
