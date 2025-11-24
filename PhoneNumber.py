@@ -1,6 +1,6 @@
 
 
-class phoneNumber:
+class PhoneNumber:
 
     def __init__(self, phoneNum):
 
