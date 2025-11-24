@@ -1,24 +1,33 @@
 # savingsAccount.py
 # 
-# authors: Hanna Nash, Victoria Seusankar, Will Wian
+# Author(s): Hanna Nash, Victoria Seusankar, Will Wian
 #
 # Date: 10/29/25
+# 
+# This is the module that creates the savings account 
+
+from bankAccount import BankAccount
+from transaction import Transaction
 from AES_CBC import *
 from random import randint
 
-DEBUG = False
-messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
-"\t"]
-extenderLength = len(messageExtenders) - 1
 
-# Encryption key (Ensure the key is 16, 24, or 32 bytes for AES-128, AES-192, or AES-256)
-key = b'MySuperSecretKey1222222222222222'
-#print("The length of the key is %d bytes" % len(key))
 
-# Initialization vector (Ensure the IV is 16 bytes)
-iv = b'MySuperSecretIV7'
-#print("The length of the Initialization Vector is %d bytes" % len(iv))
-class SavingsAccount (BankAccount):
+
+class SavingsAccount (BankAccount): 
+  DEBUG = False
+  messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
+  "\t"]
+  extenderLength = len(messageExtenders) - 1
+  
+  # Encryption key (Ensure the key is 16, 24, or 32 bytes for AES-128, AES-192, or AES-256)
+  key = b'MySuperSecretKey1222222222222222'
+  #print("The length of the key is %d bytes" % len(key))
+  
+  # Initialization vector (Ensure the IV is 16 bytes)
+  iv = b'MySuperSecretIV7'
+  #print("The length of the Initialization Vector is %d bytes" % len(iv))  
+  
   INTEREST_RATE = 0.04
   ACCOUNT_TYPE = "Savings"
   _NEXTACCOUNTNUMBER = 1000
@@ -38,214 +47,145 @@ class SavingsAccount (BankAccount):
     #self.type = bType
     self.overdrawn = 0
 
-    self.transactions.append(f"Account created with balance: ${self.balance:.2f}")  
+    self.transactions.append(f"Account created with balance: ${self.balance:.2f}") 
+        
     
-    def displayDetails(self):
-        print(f"Current balance: ${self.balance:.2f}")
-        print("Recent transactions:")
-        print("\n Transactions for Account %d" % (self.accountNumber))
+  def displayDetails(self):
+    print(f"Current balance: ${self.balance:.2f}")
+    print("Recent transactions:")
+    print("\n Transactions for Account %d" % (self.accountNumber))
     
         # Check if the list of transactions is empty
-        if not self.transactions:
-          print("No transactions recorded.")
-          return
+    if not self.transactions:
+      print("No transactions recorded.")
+      return
         
-        for transaction in self.transactions:
-          print(transaction)    
+    for transaction in self.transactions:
+      print(transaction)        
     
-    # Calculates and applies the monthly 4.0% annual interest.
+   # Calculates and applies the monthly 4.0% annual interest.
     # @return: True if the interest was calculated and applied, and False otherwise.
-    def calculateInterest(self):
-        assert self.INTEREST_RATE > 0, "Interest rate must be positive for calculation."
-        assert self.balance > 0 
-
-        # Store the initial state for assertion
-        initial_balance = self._balance
-        initial_transaction_count = len(self._transactions)
-        
-        # Calculate the monthly interest rate
-       # monthly_rate = self.INTEREST_RATE / 12.0
+  def calculateInterest(self):
+      # Calculate the monthly interest rate
+      assert self.INTEREST_RATE > 0
+      assert self.balance > 0
+      #monthly_rate = self.INTEREST_RATE / 12.0
     
-        # The interest earned on the balance based on the interest rate
-        interestEarned = self._balance * self.INTEREST_RATE
+      # The interest earned on the balance based on the interest rate
+      interestEarned = self.balance * SavingsAccount.INTEREST_RATE
 
-        if interestEarned > 0:
+      if interestEarned > 0:
             # Add the interest earned to the balance
-            self._balance += interestEarned
+          self.balance += interestEarned
     
             # Create an interest transaction
-            interestTransaction = Transaction(SavingsAccount.transactionNumber, "interest", interestEarned)
+          interestTransaction = Transaction(self.transactionNumber, "interest", interestEarned)
         
             # Append the transaction to the transactions list
-            self._transactions.append(interestTransaction)
-            SavingsAccount.transactionNumber += 1
+          self.transactions.append(interestTransaction)
+          self.transactionNumber += 1
             
-            print("Interest Applied: %.2f added to Savings Account %d." % (interestEarned, self.getAccountNumber()))
-
-            # ASSERTIONS FOR SUCCESS
-            # ASSERTION: The new balance must be the initial balance plus the interest earned.
-            assert self._balance == initial_balance + interestEarned, "The interest calculation failed to update the balance."
-            # ASSERTION: A new transaction must be added.
-            assert len(self._transactions) == initial_transaction_count + 1, "Failed to record the interest transaction."
-            
-            return True
+          print("Interest Applied: %.2f added to Savings Account %d." % (interestEarned, self.getAccountNumber()))
+          return True
         
-        else:
-            # ASSERTIONS FOR FAILURE
-            # ASSERTION: The balance must not change.
-            assert self._balance == initial_balance, "Balance changed despite no interest being applied."
-            # ASSERTION: The transaction count must not change.
-            assert len(self._transactions) == initial_transaction_count, "Transaction recorded despite no interest being applied."
-            
-            return False
+      else:
+          print("No interest applied to Savings Account %d due to negative balance." % (self.getAccountNumber()))
+          return False
 
     
     # Handles withdrawals, including checks for debt limits and applying tiered overdraft fees.
     # @param amount: The amount to withdraw.
     # @return: True if the withdrawal is successful, and False otherwise.
-    def withdraw(self, amount):
-        assert isinstance(amount, (int, float)), "Withdrawal amount must be a number."
-        assert self.balance > 0 
-        assert amount > 0
-
-        # Store the initial state for assertion
-        initial_balance = self._balance
-        initial_transaction_count = len(self._transactions)
-        
+  def withdraw(self, amount):
         # Check to see if the amount requested is positive
-        if amount <= 0:
-            print("Error: Withdrawal amount must be positive.")
-            return False
-
-        # Check to see if the current balance can cover the withdrawal
-        if self._balance >= amount:            
-            # Create the withdrawal transaction
-            withdrawalTransaction = Transaction(BankAccount._nextTransactionNumber, "withdrawal", -amount)
+    assert self.balance > 0 
+    assert amount > 0
+    assert isinstance(amount, (int, float)) and amount > 0
+    # Check to see if the current balance can cover the withdrawal
+    if self.balance >= amount:            
+      # Create the withdrawal transaction
+      withdrawalTransaction = Transaction(self.transactionNumber, "withdrawal", amount)
             
-            # Append the withdrawal to the transactions list
-            self._transactions.append(withdrawalTransaction)
+      # Append the withdrawal to the transactions list
+      self.transactions.append(withdrawalTransaction)
             
-            # Add to the transaction number
-            BankAccount._nextTransactionNumber += 1
+      # Add to the transaction number
+      self.transactionNumber += 1
             
-            # Subtract the amount from the balance
-            self._balance -= amount
-            
-            print("Standard withdrawal complete. New Balance: %.2f" % (self._balance))
-
-            # ASSERTIONS FOR SUCCESS
-            assert self._balance == initial_balance - amount, "The withdrawal failed to update the balance correctly."
-            assert len(self._transactions) == initial_transaction_count + 1, "Failed to record the withdrawal transaction."
-            
-            return True
-
-        elif self.balance >= 100000:
-            self.overdrawn = 0
-
-        else:
-            # ASSERTIONS FOR FAILURE
-            assert self._balance == initial_balance, "The balance changed despite the insufficient funds."
-            assert len(self._transactions) == initial_transaction_count, "The transaction recorded despite the insufficient funds."
-            self.overdrawn += 1
-            self.balance -= SavingsAccount.OVERDRAFT_FEE
-            penaltyTransacation = Transaction(self.transactionNumber, "Penalty", SavingsAccount.OVERDRAFT_FEE)
-            self.transaction.append(penaltyTransaction)
-            
-            if (self.overdrawn == 2):
-                self.overdrawn += 1
-                self.balance -= 30
-                penaltyTransaction = Transaction(self.transactionNumber, "Penalty", 30)
-                self.transaction.append(penaltyTransaction)
+      # Subtract the amount from the balance
+      self.balance -= amount
+      print("Standard withdrawal complete. New Balance: %.2f" % (self.balance))
+      return True
+    
+    elif self.balance >= 10000:
+      self.overdrawn = 0
+    
+    else:
+      if (self.overdrawn == 1):
+        penaltyTransacation = Transaction(self.transactionNumber, "penalty", SavingsAccount.OVERDRAFT_FEE)
+        self.transactions.append(penaltyTransaction)
+        self.overdrawn += 1
+        self.balance -= SavingsAccount.OVERDRAFT_FEE        
+      elif (self.overdrawn == 2):
+        self.overdrawn += 1
+        self.balance -= 30
+        penaltyTransaction = Transaction(self.transactionNumber, "Penalty", 30)
+        self.transactions.append(penaltyTransaction)
         
-           elif (self.overdrawn == 3):
-                self.overdrawn += 1
-                self.balance -= 50
-                penaltyTransaction = Transaction(self.transactionNumber, "Penalty", 50)
-                self.transaction.append(penaltyTransaction)  
-            
-            return False
-
-    
-    # Transfers a specified amount from one account (source) to the current account (destination).
-    # @param fromAccount: The BankAccount object to withdraw the funds from (the source).
-    # @param amount: The amount to transfer.
-    # @return: True if the transfer is successful, and False otherwise.
-    def transfer(self, fromAccount, amount):
-        assert fromAccount is not None, "Source account cannot be None."
-        assert isinstance(amount, (int, float)) and amount > 0, "Transfer amount must be a positive number."
-        assert self.balance > 0
-        assert amount > 0
-        assert self != fromAccount
-
-        # Store the initial state of the destination account for assertion
-        initial_self_balance = self._balance
-        initial_self_transactions = len(self._transactions)
+      elif (self.overdrawn == 3):
+        self.overdrawn += 1
+        self.balance -= 50
+        penaltyTransaction = Transaction(self.transactionNumber, "Penalty", 50)
+        self.transactions.append(penaltyTransaction)  
+      
         
-        # If fromAccount tries to make a transfer to itself, deny the transfer and return false
-        '''if fromAccount is self:
-            print("Transfer denied: Cannot transfer to the same account.")
-            # ASSERTIONS FOR FAILURE
-            assert self._balance == initial_self_balance, "Destination balance changed on self-transfer attempt."
-            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded on self-transfer attempt."
-            
-            return False'''
     
-        # If the amount being transfered is negative or equal to 0, print a message to let the user know
-        # that the amount being transferred needs to be positive, and return false
-       ''' if amount <= 0:
-            print("Transfer denied: Amount must be positive.")
-            # ASSERTIONS FOR FAILURE
-            assert self._balance == initial_self_balance, "Destination balance changed on non-positive amount transfer attempt."
-            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded on non-positive amount transfer attempt."
-            
-            return False'''
+   
+
     
+    # 
+    # 
+  def transfer(self, fromAccount, amount):
+      assert self.balance > 0
+      assert amount > 0
+      assert self != fromAccount
+
         # Create a variable to store the successful withdrawal
-        successfulWithdrawal = fromAccount.withdraw(amount)
+      successfulWithdrawal = fromAccount.withdraw(amount)
     
         # If the withdrawal is successful, deposit the specified amount and return true
-        if successfulWithdrawal:
-            self.deposit(amount) 
-            return True
+      if successfulWithdrawal:
+          self.deposit(amount) 
+          return True
     
         # If the withdrawal does not meet the proper conditions, print a message to let the user know
         # that the transfer failed, and return false
-        else:
-            print("Transfer failed: Withdrawal from the source account was denied.")
-            # ASSERTIONS FOR FAILURE
-            assert self._balance == initial_self_balance, "Destination balance changed when source withdrawal failed."
-            assert len(self._transactions) == initial_self_transactions, "Destination transaction recorded when source withdrawal failed."
-            
-            return False
+      else:
+          print("Transfer failed: Withdrawal from the source account was denied.")
+          return False
         
+    
 
-    
-    def printTransactions(self): #Me
-        #Print all transactions.
-        print("Transaction History:")
-        for i in range(len(self.transactions)):
-            print(self.transactions[i])    
-    
     # Create a list to store the transactions, encrypt the list, return a list.
-    def writeTransactions(self, filename): #Me
+  def writeTransactions(self, filename): #Me
         # Create a message string to encrypt
         transList = [] #the self.transactions
         # message = 
         
         # assert
-        if (self._accountType == "checkings"):
+        if (self.type == "checkings"):
             outFile = open("checkings.txt", "wb")
         else:
             outFile = open("savings.txt", "wb")
         
         # For each message in the list:
-        for i in range(len(self.transactions[i])):
+        for i in range(len(self.transactions)):
             # call the encrypt method, passing it the message
             # store the return value in a variable - "result"
             message = str(self.transactions[i])
             transList.append(i)
             
-        result = encrypt_AES_CBC(message, key, iv)
+        result = encrypt_AES_CBC(message, SavingsAccount.key, SavingsAccount.iv)
         """
         if DEBUG:
             print(len(result), result)
@@ -260,22 +200,22 @@ class SavingsAccount (BankAccount):
         outFile.write(b"\n")
             
         # Append a randomly selected extender to the message
-        index = randint(0, extenderLength)
-        message = message + messageExtenders[index]
+        #index = randint(0, extenderLength)
+        #message = message + messageExtenders[index]
             
         # close the output file
         outFile.close()        
         
     
-    def readTransactions(self, filename): #Me
+  def readTransactions(self, filename): #Me
         # Open the input file to read the encrypted data
-        if (self._accountType == "checkings"):
-            outFile = open("checkings.txt", "wb")
+        if (self.type == "checkings"):
+            outFile = open("checkings.txt", "rb")
         else:
-            outFile = open("savings.txt", "wb")
+            outFile = open("savings.txt", "rb")
         
         # read in the the file
-        line = inFile.readline()
+        line = outFile.readline()
         line = line.rstrip()
         line= line.decode()
         """
@@ -284,22 +224,17 @@ class SavingsAccount (BankAccount):
         """
         while line != "" :
             length = int(line)
-            data = inFile.read(length)
-            inFile.readline()
-            result = decrypt_AES_CBC(data, key, iv)
-            line = inFile.readline().rstrip().decode()
+            data = outFile.read(length)
+            outFile.readline()
+            result = decrypt_AES_CBC(data, SavingsAccount.key, SavingsAccountiv)
+            line = outFile.readline().rstrip().decode()
         if DEBUG:
             print("decoded data", result)
             print("Line is: %s:" % (line))
             
         # Close the input file
 
-        inFile.close() 
-
-
-
-
-
-
-
-
+        outFile.close() 
+        
+  def __repr__(self):
+    return ("SavingsAccount(balance = %d)" % self.balance)  
