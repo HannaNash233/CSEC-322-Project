@@ -5,18 +5,29 @@
 # date: 10/29/25
 
 from bankAccount import BankAccount
+from transaction import Transaction
 from AES_CBC import *
 from random import randint
-
-DEBUG = False
-
 
 
 
 class CheckingAccount(BankAccount):
+     DEBUG = False
+     #messageExtenders = ["ab", "cd", "12", "34", "QWERTY", "WASDX", "dogs", "cats",
+     #"\t"]
+     #extenderLength = len(messageExtenders) - 1
+     
+     # Encryption key (Ensure the key is 16, 24, or 32 bytes for AES-128, AES-192, or AES-256)
+     key = b'MySuperSecretKey1222222222222222'
+     #print("The length of the key is %d bytes" % len(key))
+     
+     # Initialization vector (Ensure the IV is 16 bytes)
+     iv = b'MySuperSecretIV7'
+     #print("The length of the Initialization Vector is %d bytes" % len(iv))     
     
      INTEREST_RATE = 0.015
-    
+     _NEXTACCOUNTNUMBER = 1000
+     OVERDRAFT_FEE = 20.00     
      def __init__(self, initBalance=0.0): #Me
         #Initialize the account with an initial balance and empty transaction list
           super().__init__(initBalance)
@@ -24,7 +35,10 @@ class CheckingAccount(BankAccount):
           self.balance = float(initBalance)
           self.transactions = []
           self.transactions.append(f"Account created with balance: ${self.balance:.2f}")
-          self.type = "Checking"
+          self.type = "Checkings"
+          self.accountNumber = CheckingAccount._NEXTACCOUNTNUMBER
+          CheckingAccount._NEXTACCOUNTNUMBER += 1
+          self.transactionNumber = 100
     
      def displayDetails(self): #Me
         #Display current account details
@@ -46,8 +60,8 @@ class CheckingAccount(BankAccount):
     # @require: balance > 0 to earn interest
      def calculateInterest(self):
           assert self.balance > 0, "Interest cannot be applied to negative or zero balance."
-          if self.balance <= 0:
-               return False
+          #if self.balance <= 0:
+          #     return False
         
           interestEarned = self.balance * CheckingAccount.INTEREST_RATE
           self.balance += interestEarned
@@ -63,7 +77,7 @@ class CheckingAccount(BankAccount):
           assert amount > 0, "Withdrawal amount must be positive."
         
           if amount > self.balance:
-               print("Withdrawal denied: insufficient dunds.")
+               print("Withdrawal denied: insufficient funds.")
                return False
         
           self.balance -= amount
@@ -73,64 +87,82 @@ class CheckingAccount(BankAccount):
     
      '''def printTransactions(self):
           print("Transaction # %d, amount $%.2f, date %s type: %s" % (self.transactionNumber, self._amount, self._date, self._tType))'''
-    
-     def writeTransactions(self, filename):
-         key = b'MySuperSecretKey1222222222222222'
-        #print("The length of the key is %d bytes" % len(key))
-
-        # Initialization vector (Ensure the IV is 16 bytes)
-         iv = b'MySuperSecretIV7'
-        #print("The length of the Initialization Vector is %d bytes" % len(iv))
-
-         
-          transList = []
-    #make sure account has an assert
-          if (self.type == "checkings"):
-               outFile = open("checkings.txt", "wb")
+     
+     def tranfer(self, fromAccount, amount):
+          assert self.balance > 0
+          assert amount > 0
+          assert self != fromAccount
+   
+         # Create a variable to store the successful withdrawal
+          successfulWithdrawal = fromAccount.withdraw(amount)
+     
+         # If the withdrawal is successful, deposit the specified amount and return true
+          if successfulWithdrawal:
+               self.deposit(amount) 
+               return True
+     
+         # If the withdrawal does not meet the proper conditions, print a message to let the user know
+         # that the transfer failed, and return false
           else:
-               outFile = open("savings.txt", "wb")
-
-          for i in range (len(self.transactions)):
-               message = str(self.transactions[i])
-               transList.append(i)
-       
-          result = encrypt_AES_CBC(message, key, iv)
-
-          # Write the length of the message to the file.
-          outFile.write(str(len(result)).encode())
-          outFile.write(b"\n")
-          # Write the encrypted message and newline to the file
-          outFile.write(result)
-          outFile.write(b"\n")
-          # Append a randomly selected extender to the message
+               print("Transfer failed: Withdrawal from the source account was denied.")
+               return False    
           
-          # close the output file
-          outFile.close() 
-
     
-     def readTransactions(self, filename):
-
-
-          if (self.type == "checkings"):
-               outFile = open("checkings.txt", "rb")
-          else:
-               outFile = open("savings.txt", "rb")
-# read in the file
-          line = outFile.readline()
+     def writeTransactions(self):
+          assert len(self.transactions) > 0
+          outFile = open("checkings.txt", "wb")
+       
+       
+          transList = [] #the self.transactions
+          message = ""
+       #outFile = open("checkings.txt", "wb")    
+         
+         
+       # Create a message string to encrypt
+      
+       # For each message in the list:
+          for i in range(len(self.transactions)):
+               message = message + str(self.transactions[i]) + "\n"
+               transList.append(i)
+               result = encrypt_AES_CBC(message, CheckingAccount.key, CheckingAccount.iv)
+              
+              # Write the length of the message to the file.
+               outFile.write(str(len(result)).encode())
+               outFile.write(b"\n")
+              # Write the encrypted message and newline to the file
+               outFile.write(result)
+               outFile.write(b"\n")
+              
+              # Append a randomly selected extender to the message
+             #  index = randint(0, extenderLength)
+             #  message = message + messageExtenders[index]
+              
+         # close the output file
+          outFile.close()
+           
+     def readTransactions(self):
+          assert len(self.transactions) > 0
+          infile = open("checkings.txt", "rb")
+      
+         
+          line = infile.readline()
           line = line.rstrip()
           line= line.decode()
-    
+          """
+       if DEBUG:
+           print("The input length is: %s:" % (line))
+       """
           while line != "" :
                length = int(line)
-               data = outFile.read(length)
-               outFile.readline()
-               result = decrypt_AES_CBC(data, key, iv)
-               line = outFile.readline().rstrip().decode()
-               if DEBUG:
+               data = infile.read(length)
+               infile.readline()
+               result = decrypt_AES_CBC(data, CheckingAccount.key, CheckingAccount.iv)
+               line = infile.readline().rstrip().decode()
+               if CheckingAccount.DEBUG:
                     print("decoded data", result)
                     print("Line is: %s:" % (line))
-# Close the input file
-               outFile.close()
-    
-
-
+           
+       # Close the input file
+   
+          infile.close()    
+          
