@@ -9,19 +9,23 @@
 
 from transaction import Transaction
 from abc import ABC, abstractmethod
+from AES_CBC import *
+from random import randint
+
+
+
 
 class BankAccount:
   # Attributes (overdraft fee, interest rate, next available account number)
   OVERDRAFT_FEE = 20.00
   INTEREST_RATE = 0.075
   _NEXTACCOUNTNUMBER = 1000
-  
-  
 
   
   # Constructs a bank account.
-  # @param initBalance: The initial bank account balance (float)
-  # @param bType: Bank account type.
+  #@param firstName: The first name of the account holder
+  #@param lastName: The last name of the account holder
+  #@param initBalance: The initial bank account balance (float)
   # @require: The length of the first name has to be in between 1 and 25
   # @require: The length of the last name has to be in between 1 and 40
   def __init__(self, initBalance=0.0, bType = " "):
@@ -76,10 +80,33 @@ class BankAccount:
   #@param fromAccount: The BankAccount object to transfer the money from
   #@param amount: The amount being transfered
   #@return True if the transfer is successful, and False otherwise
-  @abstractmethod
+ 
   def tranfer(self, fromAccount, amount):
-    pass
+    assert self.balance > 0
+    assert amount > 0
+    assert self != fromAccount
 
+      # Create a variable to store the successful withdrawal
+    successfulWithdrawal = fromAccount.withdraw(amount)
+  
+      # If the withdrawal is successful, deposit the specified amount and return true
+    if successfulWithdrawal:
+        self.deposit(amount) 
+        return True
+  
+      # If the withdrawal does not meet the proper conditions, print a message to let the user know
+      # that the transfer failed, and return false
+    else:
+        print("Transfer failed: Withdrawal from the source account was denied.")
+        return False    
+  
+  @abstractmethod
+  def writeTransactions(self):
+    pass
+  
+  @abstractmethod
+  def readTransactions(self):
+    pass
 
 
   # Print the list of transactions for an account
@@ -95,6 +122,7 @@ class BankAccount:
     for transaction in self.transactions:
       print(transaction)
       
+  
   # initializing the getters 
   def getAccountNumber(self):
       return self.accountNumber  
