@@ -48,3 +48,11 @@ class ClientAddress:
     def __eq__(self, other):
         result = self._street == other._street and self._city == other._city and self._state == other._state
         return result
+    
+    def __gt__(self, other):
+        result = self._street > other._street and self._city > other._city and self._state > other._state
+        return result
+    
+    def __le__(self, other):
+        result = self._street <= other._street and self._city <= other._city and self._state <= other._state
+        return result
