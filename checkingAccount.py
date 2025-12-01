@@ -103,63 +103,7 @@ class CheckingAccount(BankAccount):
                print("Transfer failed: Withdrawal from the source account was denied.")
                return False    
           
-    
-     def writeTransactions(self):
-          assert len(self.transactions) > 0
-          outFile = open("checkings.txt", "wb")
-       
-       
-          transList = [] #the self.transactions
-          message = ""
-       #outFile = open("checkings.txt", "wb")    
-         
-         
-       # Create a message string to encrypt
-      
-       # For each message in the list:
-          for i in range(len(self.transactions)):
-               message = message + str(self.transactions[i]) + "\n"
-               transList.append(i)
-               result = encrypt_AES_CBC(message, CheckingAccount.key, CheckingAccount.iv)
-              
-              # Write the length of the message to the file.
-               outFile.write(str(len(result)).encode())
-               outFile.write(b"\n")
-              # Write the encrypted message and newline to the file
-               outFile.write(result)
-               outFile.write(b"\n")
-              
-              # Append a randomly selected extender to the message
-             #  index = randint(0, extenderLength)
-             #  message = message + messageExtenders[index]
-              
-         # close the output file
-          outFile.close()
-           
-     def readTransactions(self):
-          assert len(self.transactions) > 0
-          infile = open("checkings.txt", "rb")
-      
-         
-          line = infile.readline()
-          line = line.rstrip()
-          line= line.decode()
-          """
-       if DEBUG:
-           print("The input length is: %s:" % (line))
-       """
-          while line != "" :
-               length = int(line)
-               data = infile.read(length)
-               infile.readline()
-               result = decrypt_AES_CBC(data, CheckingAccount.key, CheckingAccount.iv)
-               line = infile.readline().rstrip().decode()
-               if CheckingAccount.DEBUG:
-                    print("decoded data", result)
-                    print("Line is: %s:" % (line))
-           
-       # Close the input file
-   
-          infile.close()    
+  
           
+
 
