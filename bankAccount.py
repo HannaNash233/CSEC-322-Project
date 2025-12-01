@@ -150,7 +150,10 @@ class BankAccount(ABC):
            
      def readTransactions(self):
           assert len(self.transactions) > 0
-          infile = open("checkings.txt", "rb")
+          if (self.type == "checkings"):
+            outFile = open("checkings.txt", "rb")
+          else:
+            outFile = open("savings.txt", "rb")
       
          
           line = infile.readline()
