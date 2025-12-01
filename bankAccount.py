@@ -113,7 +113,12 @@ class BankAccount(ABC):
   
   def writeTransactions(self):
           assert len(self.transactions) > 0
-          outFile = open("checkings.txt", "wb")
+
+    
+           if (self.type == "checkings"):
+            outFile = open("checkings.txt", "wb")
+          else:
+            outFile = open("savings.txt", "wb")
        
        
           transList = [] #the self.transactions
