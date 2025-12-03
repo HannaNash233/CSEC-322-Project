@@ -22,11 +22,11 @@ class BankAccount(ABC):
   _NEXTACCOUNTNUMBER = 1000
 
   # Random Encryption key (Ensure the key is 32 bytes)
-  key = os.urandom(32)
+  _key = os.urandom(32)
   #print("The length of the key is %d bytes" % len(key))
      
   # Random Initialization Vector (Ensure the IV is 16 bytes)
-  iv = os.urandom(16)
+  _iv = os.urandom(16)
   #print("The length of the Initialization Vector is %d bytes" % len(iv))  
 
   
