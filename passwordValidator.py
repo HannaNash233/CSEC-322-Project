@@ -15,7 +15,7 @@ class passwordValidator:
   # ITERATIONS: The number of iterations 
   # SALT_SIZE: The size of the salts in bytes
   # HASH_KEY_LENGTH: The length of the derived key in bytes
-  # DISALLOWED_CHARS_PATTERN: A pattern matching disallowed characters
+  # DISALLOWED_CHARS: A pattern matching disallowed characters
 
   MIN_LENGTH: int = 8
   MAX_LENGTH: int = 16
@@ -23,7 +23,7 @@ class passwordValidator:
   ITERATIONS: int = 200000 
   SALT_SIZE: int = 16
   HASH_KEY_LENGTH: int = 64
-  DISALLOWED_CHARS_PATTERN: str = (“/”, “\”, “<”, “>”, “|”, “ “)
+  DISALLOWED_CHARS: str = (“/”, “\”, “<”, “>”, “|”, “ “)
 
   # Constructor
   # @require: None
@@ -47,7 +47,7 @@ class passwordValidator:
 
     # Check for Disallowed Characters
     for char in password:
-      if char in DISALLOWED_CHARS_LIST:
+      if char in DISALLOWED_CHARS:
         return False
             
     return True
@@ -68,7 +68,7 @@ class passwordValidator:
       salt = os.urandom(self.SALT_SIZE)
       
     # Hash the password using PBKDF2_HMAC
-    password_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen=self.HASH_KEY_LENGTH)
+    password_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen = self.HASH_KEY_LENGTH)
     
     # Return the hash and salt
     return password_hash, salt
@@ -87,7 +87,7 @@ class passwordValidator:
     assert isinstance(salt, bytes), "Salt must be bytes."
         
     # Re-hash the cleartext password using the stored salt
-    attempted_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen=self.HASH_KEY_LENGTH)
+    attempted_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen = self.HASH_KEY_LENGTH)
     
     # Compare the hashes to avoid leaking information about the password length.
     return attempted_hash == stored_hash
