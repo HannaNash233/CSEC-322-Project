@@ -15,14 +15,7 @@ class CheckingAccount(BankAccount):
      INTEREST_RATE = 0.015
      _NEXTACCOUNTNUMBER = 1000
      OVERDRAFT_FEE = 20.00  
-
-     # Random Encryption key (Ensure the key is 32 bytes)
-     key = os.urandom(32)
-     #print("The length of the key is %d bytes" % len(key))
-     
-     # Random Initialization Vector (Ensure the IV is 16 bytes)
-     iv = os.urandom(16)
-     #print("The length of the Initialization Vector is %d bytes" % len(iv))     
+    
 
      def __init__(self, initBalance=0.0): #Me
         #Initialize the account with an initial balance and empty transaction list
@@ -105,5 +98,6 @@ class CheckingAccount(BankAccount):
           
   
           
+
 
 
