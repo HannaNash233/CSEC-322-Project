@@ -5,7 +5,6 @@ class PhoneNumber:
     def __init__(self, phoneNum):
 
     	assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
-        street, city, state = address
         
         self._phoneNum = phoneNum
         
