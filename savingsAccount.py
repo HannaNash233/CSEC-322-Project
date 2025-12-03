@@ -16,13 +16,7 @@ DEBUG = False
 
 class SavingsAccount (BankAccount): 
   
-  # Random Encryption key (Ensure the key is 32 bytes)
-  key = os.urandom(32)
-  #print("The length of the key is %d bytes" % len(key))
-  
-  # Random Initialization Vector (Ensure the IV is 16 bytes)
-  iv = os.urandom(16)
-  #print("The length of the Initialization Vector is %d bytes" % len(iv))  
+
   
   INTEREST_RATE = 0.04
   ACCOUNT_TYPE = "Savings"
@@ -160,78 +154,8 @@ class SavingsAccount (BankAccount):
           print("Transfer failed: Withdrawal from the source account was denied.")
           return False
         
-    
-
-    # Create a list to store the transactions, encrypt the list, return a list.
-  def writeTransactions(self, filename): #Me
-        # Create a message string to encrypt
-        transList = [] #the self.transactions
-        # message = 
-        
-        # assert
-        if (self.type == "checkings"):
-            outFile = open("checkings.txt", "wb")
-        else:
-            outFile = open("savings.txt", "wb")
-        
-        # For each message in the list:
-        for i in range(len(self.transactions)):
-            # call the encrypt method, passing it the message
-            # store the return value in a variable - "result"
-            message = str(self.transactions[i])
-            transList.append(i)
-            
-        result = encrypt_AES_CBC(message, SavingsAccount.key, SavingsAccount.iv)
-        """
-        if DEBUG:
-            print(len(result), result)
-        """        
-        
-        # Write the length of the message to the file.
-        outFile.write(str(len(result)).encode())
-        outFile.write(b"\n")
-            
-        # Write the encrypted message and newline to the file
-        outFile.write(result)
-        outFile.write(b"\n")
-            
-        # Append a randomly selected extender to the message
-        #index = randint(0, extenderLength)
-        #message = message + messageExtenders[index]
-            
-        # close the output file
-        outFile.close()        
-        
-    
-  def readTransactions(self, filename): #Me
-        # Open the input file to read the encrypted data
-        if (self.type == "checkings"):
-            outFile = open("checkings.txt", "rb")
-        else:
-            outFile = open("savings.txt", "rb")
-        
-        # read in the the file
-        line = outFile.readline()
-        line = line.rstrip()
-        line= line.decode()
-        """
-        if DEBUG:
-            print("The input length is: %s:" % (line))
-        """
-        while line != "" :
-            length = int(line)
-            data = outFile.read(length)
-            outFile.readline()
-            result = decrypt_AES_CBC(data, SavingsAccount.key, SavingsAccountiv)
-            line = outFile.readline().rstrip().decode()
-        if DEBUG:
-            print("decoded data", result)
-            print("Line is: %s:" % (line))
-            
-        # Close the input file
-
-        outFile.close() 
         
   def __repr__(self):
     return ("SavingsAccount(balance = %d)" % self.balance)  
+
 
