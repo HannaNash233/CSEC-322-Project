@@ -47,7 +47,9 @@ class BankAccount(ABC):
     self.transactions = []
     self.overdrawn = 0
     self.type = bType
-
+    self._iv = os.urandom(16)
+    self._key = os.urandom(32)
+    
 
   # Returns a string that contains the account details (first & last name, account number, balance, overdrawn counter)
   #@return A human readable string containing the account details
