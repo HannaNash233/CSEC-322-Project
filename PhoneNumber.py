@@ -32,5 +32,5 @@ class PhoneNumber:
         def getPhoneNum(self):
   			return self.phoneNum
   			
-  		def setPhoneNum(self):
-  			self.phoneNum = phoneNum
+  		def _setPhoneNum(self, phoneNum):
+  			self._phoneNum = phoneNum
