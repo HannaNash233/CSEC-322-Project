@@ -21,13 +21,7 @@ class BankAccount(ABC):
   INTEREST_RATE = 0.075
   _NEXTACCOUNTNUMBER = 1000
 
-  # Random Encryption key (Ensure the key is 32 bytes)
-  _key = os.urandom(32)
-  #print("The length of the key is %d bytes" % len(key))
-     
-  # Random Initialization Vector (Ensure the IV is 16 bytes)
-  _iv = os.urandom(16)
-  #print("The length of the Initialization Vector is %d bytes" % len(iv))  
+  
 
   
   # Constructs a bank account.
