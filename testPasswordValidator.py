@@ -7,7 +7,7 @@
 # This file acts as the tester for the password validator.
 
 import unittest
-from passwordValidator import PasswordValidator
+from passwordValidator import passwordValidator
 import os
 import secrets
 import hashlib
