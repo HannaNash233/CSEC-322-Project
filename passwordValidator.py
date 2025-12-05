@@ -38,7 +38,7 @@ class passwordValidator:
   # @return: True if the password is valid, and false otherwise
   # @require: The password is a string
   # @ensure: Returns true if all password requirements are met, and false otherwise
-  def isValid(password: str):
+  def isValid(self, password: str):
     assert isinstance(password, str), "Password must be a string."
     
     # Validate the length
@@ -59,7 +59,7 @@ class passwordValidator:
   # @return: A tuple containing the password and salt as bytes
   # @require: The password is a string and the salt is either None or bytes
   # @ensure: Returns a salted hash from the password
-  def hash(password: str, salt: bytes = None):
+  def hash(self, password: str, salt: bytes = None):
     assert isinstance(password, str), "Password must be a string."
     assert salt is None or isinstance(salt, bytes), "Salt must be bytes or None."
         
@@ -81,7 +81,7 @@ class passwordValidator:
   # @return: True if the password matches the stored hash, and false otherwise 
   # @require: The password is a string and the stored_hash and salt are valid byte sequences
   # @ensure: Returns true if the re-hashed password matches the stored_hash.
-  def verify(password: str, stored_hash: bytes, salt: bytes):
+  def verify(self, password: str, stored_hash: bytes, salt: bytes):
     assert isinstance(password, str), "Password must be a string."
     assert isinstance(stored_hash, bytes), "Stored hash must be bytes."
     assert isinstance(salt, bytes), "Salt must be bytes."
