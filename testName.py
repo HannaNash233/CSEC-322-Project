@@ -8,23 +8,17 @@ class TestName(unittest.TestCase):
     DEBUG = True
     
     def setUp(self):
-        self.name1 = Name("William", "Wian")
-        self.name2 = Name("Cara", "Routh")
-        
-    def TestConstructor(self):
-        if  TestName.DEBUG:
-            print("\nTesting Constructor")
-            
-        self.assertEqual(self.name1.getFirst(), "William")
-        self.assertEqual(self.name2.getFirst(), "Cara")   
+        self.name1 = Name("Spongebob", "Squarepants")
+        self.name2 = Name("Patrick", "Star")
+    
     
     # Testing first name    
     def test_setFirst(self):
         if TestName.DEBUG:
             print("\nTesting first name")
         
-        self.name1.setFirst("Jordan")
-        self.assertEqual(self.name1.getFirst(), "Jordan")
+        self.name1.setFirst("Sandy")
+        self.assertEqual(self.name1.getFirst(), "Sandy")
         
     def test_setFirstLong(self):
         if TestName.DEBUG:
@@ -59,8 +53,8 @@ class TestName(unittest.TestCase):
         if TestName.DEBUG:
             print("\nTesting last name")
         
-        self.name1.setLast("Casey")
-        self.assertEqual(self.name1.getLast(), "Casey")
+        self.name1.setLast("Cheeks")
+        self.assertEqual(self.name1.getLast(), "Cheeks")
         
     def test_setLastLong(self):
         if TestName.DEBUG:
@@ -85,26 +79,30 @@ class TestName(unittest.TestCase):
             print("\nTesting invalid characters in last name")
             
         try:
-            self.name1.setFirst("w1an4")
+            self.name1.setLast("w1an4")
         except AssertionError as e:
             print("Assertion Error:", e)  
     
+    # Testing special methods
+    def test__str__(self):
+    	if TestName.DEBUG:
+    		print("\nTesting string")
+    	
+    	result = str(self.name1)
+    	self.assertTrue(result == "Name: Spongebob Squarepants")
                 
-    def test_eq(self):
+    def test__eq__(self):
         if TestName.DEBUG:
             print("\nTesting name equality")
         
         self.assertTrue(self.name1 == self.name1)
         
-    def test_ne(self):
+    def test__ne__(self):
         if TestName.DEBUG:
             print("\nTesting name inequality")
             
-        self.assertFalse(self.name1 == self.name2)
+        self.assertTrue(self.name1 != self.name2)
         
-        
-if __name__ == '__main__':
-    unittest.main()
         
     
         
