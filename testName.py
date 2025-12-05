@@ -103,6 +103,5 @@ class TestName(unittest.TestCase):
             
         self.assertTrue(self.name1 != self.name2)
         
-        
-    
-        
+if __name__ == '__main__':
+    unittest.main()
