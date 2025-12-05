@@ -23,7 +23,7 @@ class passwordValidator:
   ITERATIONS: int = 200000 
   SALT_SIZE: int = 16
   HASH_KEY_LENGTH: int = 64
-  DISALLOWED_CHARS: str = (“/”, “\”, “<”, “>”, “|”, “ “)
+  DISALLOWED_CHARS: str = ("/", "\\", "<", ">", "|", " ")
 
   # Constructor
   # @require: None
