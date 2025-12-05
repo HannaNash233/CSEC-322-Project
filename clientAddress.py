@@ -13,8 +13,7 @@ class ClientAddress:
     # @param city: The Client's city i.e. Seaside Heights
     # @param state: The Client's state i.e. VA
     
-    # states have to be within the valid states list 
-    VALID_STATES = {"VA", "MD", "NJ", "PA", "DE", "NC", "WV", "DC"}
+   
     
     # @require: street is a non empty string with no special characters with a
     # max length of 30
@@ -22,6 +21,8 @@ class ClientAddress:
     # max length of 30
     # @require: state is a non empty string within the the valid states list and
     # the max length must be two characters
+     # states have to be within the valid states list 
+    VALID_STATES = {"VA", "MD", "NJ", "PA", "DE", "NC", "WV", "DC"}
     def __init__(self, street, city, state):
         assert isinstance(street, str)
         assert isinstance(city, str)
@@ -59,3 +60,4 @@ class ClientAddress:
     
     def __str__(self):
         return ("Street: %s, City: %s, State: %s")
+
