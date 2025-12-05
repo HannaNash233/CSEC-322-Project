@@ -28,7 +28,7 @@ class passwordValidator:
   # Constructor
   # @require: None
   # @ensure: The validator object is initialized with constants
-  def __init__():
+  def __init__(self):
     # This class is used as a container for static constants and methods, so there is no additional information needed.
     pass
 
