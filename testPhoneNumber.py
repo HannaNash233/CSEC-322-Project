@@ -70,4 +70,6 @@ class TestPhoneNumber(unittest.TestCase):
 		print("\nTesting less then or equal")
 		self.assertFalse(self.phoneNum1 <= self.phoneNum2)
             
-            
+
+if __name__ == '__main__':
+    unittest.main()
