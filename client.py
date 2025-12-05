@@ -32,8 +32,9 @@ class Client:
     	assert(isinstance(phoneNum,PhoneNumber)), "Invalid Phone Number"
     	assert(isinstance(address,ClientAddress)), "Invalid Address"
         
-        self._firstName = firstName
-        self._lastName = lastName
+        #self._firstName = firstName
+        #self._lastName = lastName
+        self._name = name
         self._phoneNum = phoneNum
         self._address = address
         self._clientNum = Client._NEXTCLIENTNUMBER
@@ -44,10 +45,13 @@ class Client:
     def getClientNumber(self):
         return self._clientNum
     
-    def getFirstName(self):
-        return self._firstName
-    def getLastName(self):
-        return self._lastName
+    #def getFirstName(self):
+    #    return self._firstName
+    #def getLastName(self):
+    #    return self._lastName
+
+    def getName(self):
+        return self._name
     
     def getAddress(self):
         return self._address
@@ -113,4 +117,5 @@ class Client:
         
     
   
+
 
