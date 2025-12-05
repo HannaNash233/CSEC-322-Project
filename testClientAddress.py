@@ -63,4 +63,6 @@ class TestClientAddress(unittest.TestCase):
         
     def testLe(self):
         print(self.clientAddress1 <= self.clientAddress2)
-        
+
+if __name__ == '__main__':
+    unittest.main()
