@@ -47,7 +47,7 @@ class BankAccount(ABC):
     #@return True if the deposit is successful, and False otherwise
     def deposit(self, amount):
         assert isinstance(amount, (int, float))
-        # assert amount >= 0
+        assert amount >= 0
         if amount <= 0:
             return False
         else:
