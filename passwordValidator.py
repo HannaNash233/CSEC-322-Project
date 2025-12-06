@@ -47,7 +47,7 @@ class passwordValidator:
 
     # Check for Disallowed Characters
     for char in password:
-      if char in DISALLOWED_CHARS:
+      if char in self.DISALLOWED_CHARS:
         return False
             
     return True
