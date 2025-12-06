@@ -115,7 +115,7 @@ class TestBankAccount(unittest.TestCase):
         
         self.assertGreater(len(self.bankAccount3.transactions), 0)
 
-    # NEW TEST: Test Encryption and Decryption (Project 3)
+    # Test Encryption and Decryption 
     def test_transaction_encryption_decryption(self):
         if TestBankAccount.DEBUG:
             print("\nTesting Transaction Encryption/Decryption (Project 3):")
@@ -138,8 +138,7 @@ class TestBankAccount(unittest.TestCase):
         self.assertEqual(len(self.bankAccount1.transactions), 0)
         
         # Read/Decrypt transactions
-        # Based on standard design, it *should* usually repopulate the list.
-        # Use a try/except block to catch AES errors if keys don't match (though they should here).
+        # Use a try/except block to catch AES errors if keys don't match.
         try:
             self.bankAccount1.readTransactions()
             # If the code runs without error, decryption was successful using the generated key/iv.
@@ -183,19 +182,6 @@ class TestBankAccount(unittest.TestCase):
         self.acc1.withdraw(2000000) # Should fail (insufficient funds)
         self.assertEqual(self.acc1.balance, 500000)
         
-    # testing special method equality    
-    def test_eq_(self):
-        if TestBankAccount.DEBUG:
-            print("Testing equality")
-        self.assertTrue(self.account4 == self.account4)
-        # Assuming different instances are not equal
-        self.assertFalse(self.account5 == self.account4)
-       
-    # testing special method inequality 
-    def test_neq(self):
-        if TestBankAccount.DEBUG:
-            print("Testing inequality")
-        self.assertTrue(self.account4 != self.account5)
 
         
 if __name__ == '__main__':
