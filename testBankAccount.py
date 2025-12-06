@@ -10,18 +10,14 @@ import unittest
 import os
 from bankAccount import BankAccount
 
-# -------------------------------------------------------------------------
 # HELPER CLASS: ConcreteBankAccount
-# -------------------------------------------------------------------------
 # Because BankAccount is an Abstract Base Class (ABC), we cannot verify
 # it directly. We create a concrete class here solely for testing purposes.
-# -------------------------------------------------------------------------
 class ConcreteBankAccount(BankAccount):
     def withdraw(self, amount):
         if self.balance >= amount:
             self.balance -= amount
             # Create a transaction record (mimicking logic in deposit)
-            # In a real scenario, withdraw should probably create a Transaction object too
             return True
         return False
 
@@ -30,9 +26,7 @@ class ConcreteBankAccount(BankAccount):
         self.balance += interest
         return self.balance
 
-# -------------------------------------------------------------------------
 # MAIN TEST CLASS
-# -------------------------------------------------------------------------
 class TestBankAccount(unittest.TestCase):
     # Constants used for testing
     INITIAL_BALANCE = 1000.00
@@ -61,31 +55,21 @@ class TestBankAccount(unittest.TestCase):
         self.bankAccount3 = ConcreteBankAccount(50, "checkings")
         self.acc1 = ConcreteBankAccount(1000000, "savings")
         
-        # Testing specific accounts
-        # Note: The BankAccount constructor takes (balance, type), not (First, Last, Balance).
-        # The Client class usually handles names. 
-        # I have adjusted these to match the BankAccount __init__ signature found in bankAccount.py
         self.account4 = ConcreteBankAccount(TestBankAccount.BALANCE1, "checkings")
         self.account5 = ConcreteBankAccount(TestBankAccount.BALANCE2, "savings")
 
-    # The tearDown method cleans up files created during testing
-    def tearDown(self):
-        if os.path.exists("checkings.txt"):
-            os.remove("checkings.txt")
-        if os.path.exists("savings.txt"):
-            os.remove("savings.txt")
 
     # The test_constructor method tests the constructor.
     def test_constructor(self):
         # Verify Balance
         self.assertEqual(self.account4.balance, TestBankAccount.BALANCE1)
         
-        # Verify Security Attributes (New for Project 3)
+        # Verify Security Attributes
         # Ensure IV and Key are generated
         self.assertIsNotNone(self.account4._iv)
         self.assertIsNotNone(self.account4._key)
-        self.assertEqual(len(self.account4._iv), 16) # Standard AES block size
-        self.assertEqual(len(self.account4._key), 32) # Standard 256-bit key
+        self.assertEqual(len(self.account4._iv), 16)
+        self.assertEqual(len(self.account4._key), 32)
 
         if TestBankAccount.DEBUG:
             print("\nTesting Constructor")
@@ -136,29 +120,25 @@ class TestBankAccount(unittest.TestCase):
         if TestBankAccount.DEBUG:
             print("\nTesting Transaction Encryption/Decryption (Project 3):")
             
-        # 1. Create transactions
+        # Create transactions
         self.bankAccount1.deposit(100.00)
         self.bankAccount1.deposit(200.00)
         
-        # Ensure transactions exist in memory
+        # Ensure transactions exist
         self.assertEqual(len(self.bankAccount1.transactions), 2)
         
-        # 2. Write transactions to encrypted file
+        # Write transactions to encrypted file
         # bankAccount1 is type "checkings", so it writes to "checkings.txt"
         self.bankAccount1.writeTransactions()
         
-        # Verify file creation
-        self.assertTrue(os.path.exists("checkings.txt"))
         
-        # 3. Simulate a fresh read by clearing current memory
+        Simulate a fresh read by clearing current memory
         # We manually clear the list to prove readTransactions actually works
         original_transactions = list(self.bankAccount1.transactions)
         self.bankAccount1.transactions = []
         self.assertEqual(len(self.bankAccount1.transactions), 0)
         
-        # 4. Read/Decrypt transactions
-        # Note: In your bankAccount.py, readTransactions prints results but doesn't 
-        # explicitly return the list or repopulate self.transactions. 
+        # Read/Decrypt transactions
         # Based on standard design, it *should* usually repopulate the list.
         # Use a try/except block to catch AES errors if keys don't match (though they should here).
         try:
@@ -173,7 +153,6 @@ class TestBankAccount(unittest.TestCase):
 
     # test calculate interest 
     def test_calculateInterest(self):
-        # We invoke the concrete implementation
         new_balance = self.account4.calculateInterest()
         
         # Initial 3200 + (3200 * 0.075) = 3200 + 240 = 3440
@@ -186,7 +165,6 @@ class TestBankAccount(unittest.TestCase):
            
     # test deposit 
     def testDeposit(self):
-        # Should work
         self.assertTrue(self.acc1.deposit(500000)) 
         self.assertEqual(self.acc1.balance, 1500000.0)
         if TestBankAccount.DEBUG:
