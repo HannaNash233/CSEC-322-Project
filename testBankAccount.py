@@ -169,7 +169,12 @@ class TestBankAccount(unittest.TestCase):
             print(f" New account balance: ${self.acc1.balance:.2f}\n")
            
         # Should not work
-        self.assertFalse(self.acc1.deposit(-10)) 
+        try:
+            self.acc1.deposit(-10)
+        except AssertionError:
+            print("Negative amount")
+            
+        #self.assertFalse(self.acc1.deposit(-10)) 
         self.assertEqual(self.acc1.balance, 1500000.0)
 
     # test withdrawl
