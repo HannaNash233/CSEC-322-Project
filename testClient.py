@@ -82,8 +82,78 @@ class testClient(unittest.TestCase):
         print("\nTest wrong type")
         with self.assertRaises(AssertionError):
             Client("John", "Johnson", "1234567890", address3, "Wrong")
+
+   def test_eq(self):
+        if testClient.DEBUG:
+            print("\nTesting __eq__ method")
+    
+            # Assign account numbers for controlled comparison
+        self.client1 = self.client2
+        
+        #self.client1.clientNum = 100
+        #self.client2.clientNum = 101
+        #self.client3
+    
+            # Equal
+        result = (self.client1 == self.client2)
+        self.assertTrue(result)
+    
+            # Not equal
+        result = (self.client1 == self.client3)
+        self.assertFalse(result)
+    
+    
+    def test_lt(self):
+        if testClient.DEBUG:
+            print("\nTesting __lt__ method")
+    
+        #self.bankAccount1.accountNumber = 1000
+        #self.bankAccount2.accountNumber = 1001
+    
+        result = (self.client1 < self.client2)
+        self.assertTrue(result)
+    
+        result = (self.client2 < self.client1)
+        self.assertFalse(result)
+    
+    
+    def test_gt(self):
+        if testClient.DEBUG:
+            print("\nTesting __gt__ method")
+    
+        #self.client1.clientNum = 100
+        #self.client2.clientNum = 101
+    
+        result = (self.client1 > self.client2)
+        self.assertFalse(result)
+    
+        result = (self.client2 > self.client1)
+        self.assertTrue(result)
+    
+    
+    def test_le(self):
+        if testClient.DEBUG:
+            print("\nTesting __le__ method")
+    
+        #self.account4.accountNumber = 1000
+        #self.account5.accountNumber = 1001
+        #self.bankAccount1.accountNumber = 1000
+    
+            # less-than case
+        result = (self.client1 <= self.client2)
+        self.assertTrue(result)
+    
+            # equal case
+        result = (self.client3 <= self.client2)
+        self.assertFalse(result)
+    
+            # greater-than case
+        result = (self.client2 <= self.client1)
+        self.assertFalse(result)
+        
     
            
 if __name__ == '__main__':
 
     unittest.main()
+
