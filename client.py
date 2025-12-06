@@ -114,8 +114,38 @@ class Client:
     
     def setPhoneNum(self, phoneNum):
         self._phoneNum = phoneNum
+
+    def __eq__(self, other):
+        assert isinstance(other, Client)
+        
+        result = (self._clientNum == other._clientNum) and (self._address == other._address) and (self._name == other._name) 
+        #result = (self._clientNum == other._clientNum) and (self._address == other._address) and (self._name == other._name) and (self._phoneNum == other._phoneNum)
+        return result 
+    
+    def __gt__(self, other):
+        assert isinstance(other, Client)
+        
+        #result = (self._clientNum > other._clientNum) or  (self._phoneNum > other._phoneNum)
+        result = (self._clientNum > other._clientNum)
+        return result     
+    
+    def __lt__(self, other):
+        assert isinstance(other, Client)
+        
+        #result = (self._clientNum < other._clientNum) or (self._phoneNum < other._phoneNum)
+        result = (self._clientNum < other._clientNum)
+        return result       
+    
+    def __le__(self, other):
+        assert isinstance(other, Client)
+        
+        
+        #result = (self._clientNum <= other._clientNum) or  (self._phoneNum <= other._phoneNum)
+        result = (self._clientNum <= other._clientNum)
+        return result            
         
     
   
+
 
 
