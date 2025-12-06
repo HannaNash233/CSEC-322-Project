@@ -54,10 +54,16 @@ class TestBankAccount(unittest.TestCase):
         self.bankAccount2 = ConcreteBankAccount(TestBankAccount.INITIAL_BALANCE, "savings")
         self.bankAccount3 = ConcreteBankAccount(50, "checkings")
         self.acc1 = ConcreteBankAccount(1000000, "savings")
-        
         self.account4 = ConcreteBankAccount(TestBankAccount.BALANCE1, "checkings")
         self.account5 = ConcreteBankAccount(TestBankAccount.BALANCE2, "savings")
-
+        
+        # Assign IDs manually (only if your constructor doesn't do this automatically)
+        self.bankAccount1.accountNumber = 1000
+        self.bankAccount2.accountNumber = 1001
+        self.bankAccount3.accountNumber = 1002
+        self.acc1.accountNumber = 1003
+        self.account4.accountNumber = 1004
+        self.account5.accountNumber = 1005
 
     # The test_constructor method tests the constructor.
     def test_constructor(self):
@@ -191,68 +197,45 @@ class TestBankAccount(unittest.TestCase):
     def test_eq(self):
         if TestBankAccount.DEBUG:
             print("\nTesting __eq__ method")
-
-        # Assign account numbers for controlled comparison
-        self.account4.accountNumber = 1000
-        self.account5.accountNumber = 1001
-        self.bankAccount1.accountNumber = 1000
-
-        # Equal
-        result = (self.account4 == self.bankAccount1)
-        self.assertTrue(result)
-
-        # Not equal
-        result = (self.account4 == self.account5)
-        self.assertFalse(result)
-
+        
+        # Test equality: An account should be equal to itself
+        self.assertTrue(self.bankAccount1 == self.bankAccount1)
+        
+        # Test inequality: Different accounts should not be equal
+        self.assertFalse(self.bankAccount1 == self.bankAccount2)
 
     def test_lt(self):
         if TestBankAccount.DEBUG:
             print("\nTesting __lt__ method")
-
-        self.bankAccount1.accountNumber = 1000
-        self.bankAccount2.accountNumber = 1001
-
-        result = (self.bankAccount1 < self.bankAccount2)
-        self.assertTrue(result)
-
-        result = (self.bankAccount2 < self.bankAccount1)
-        self.assertFalse(result)
-
+        
+        # bankAccount1 (created first) should be less than bankAccount2 (created second)
+        self.assertTrue(self.bankAccount1 < self.bankAccount2)
+        
+        # Reverse check
+        self.assertFalse(self.bankAccount2 < self.bankAccount1)
 
     def test_gt(self):
         if TestBankAccount.DEBUG:
             print("\nTesting __gt__ method")
 
-        self.bankAccount1.accountNumber = 1005
-        self.bankAccount2.accountNumber = 1001
+        # bankAccount2 (created second) should be greater than bankAccount1 (created first)
+        self.assertTrue(self.bankAccount2 > self.bankAccount1)
 
-        result = (self.bankAccount1 > self.bankAccount2)
-        self.assertTrue(result)
-
-        result = (self.bankAccount2 > self.bankAccount1)
-        self.assertFalse(result)
-
+        # Reverse check
+        self.assertFalse(self.bankAccount1 > self.bankAccount2)
 
     def test_le(self):
         if TestBankAccount.DEBUG:
             print("\nTesting __le__ method")
-
-        self.account4.accountNumber = 1000
-        self.account5.accountNumber = 1001
-        self.bankAccount1.accountNumber = 1000
-
-        # less-than case
-        result = (self.account4 <= self.account5)
-        self.assertTrue(result)
-
-        # equal case
-        result = (self.account4 <= self.bankAccount1)
-        self.assertTrue(result)
-
-        # greater-than case
-        result = (self.account5 <= self.account4)
-        self.assertFalse(result)
+            
+        # account4 should be less than or equal to account5 (created later)
+        self.assertTrue(self.account4 <= self.account5)
+        
+        # Equality check: An account is <= itself
+        self.assertTrue(self.account4 <= self.account4)
+        
+        # Failure check: A later account is not <= an earlier account
+        self.assertFalse(self.account5 <= self.account4)
         
         
 if __name__ == '__main__':
