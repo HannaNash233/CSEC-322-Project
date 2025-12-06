@@ -181,8 +181,74 @@ class TestBankAccount(unittest.TestCase):
         # Should be equal to the first withdrawl
         self.acc1.withdraw(2000000) # Should fail (insufficient funds)
         self.assertEqual(self.acc1.balance, 500000)
-        
 
+    # Comparison Method Tests
+    def test_eq(self):
+        if TestBankAccount.DEBUG:
+            print("\nTesting __eq__ method")
+
+        # Assign account numbers for controlled comparison
+        self.account4.accountNumber = 1000
+        self.account5.accountNumber = 1001
+        self.bankAccount1.accountNumber = 1000
+
+        # Equal
+        result = (self.account4 == self.bankAccount1)
+        self.assertTrue(result)
+
+        # Not equal
+        result = (self.account4 == self.account5)
+        self.assertFalse(result)
+
+
+    def test_lt(self):
+        if TestBankAccount.DEBUG:
+            print("\nTesting __lt__ method")
+
+        self.bankAccount1.accountNumber = 1000
+        self.bankAccount2.accountNumber = 1001
+
+        result = (self.bankAccount1 < self.bankAccount2)
+        self.assertTrue(result)
+
+        result = (self.bankAccount2 < self.bankAccount1)
+        self.assertFalse(result)
+
+
+    def test_gt(self):
+        if TestBankAccount.DEBUG:
+            print("\nTesting __gt__ method")
+
+        self.bankAccount1.accountNumber = 1005
+        self.bankAccount2.accountNumber = 1001
+
+        result = (self.bankAccount1 > self.bankAccount2)
+        self.assertTrue(result)
+
+        result = (self.bankAccount2 > self.bankAccount1)
+        self.assertFalse(result)
+
+
+    def test_le(self):
+        if TestBankAccount.DEBUG:
+            print("\nTesting __le__ method")
+
+        self.account4.accountNumber = 1000
+        self.account5.accountNumber = 1001
+        self.bankAccount1.accountNumber = 1000
+
+        # less-than case
+        result = (self.account4 <= self.account5)
+        self.assertTrue(result)
+
+        # equal case
+        result = (self.account4 <= self.bankAccount1)
+        self.assertTrue(result)
+
+        # greater-than case
+        result = (self.account5 <= self.account4)
+        self.assertFalse(result)
+        
         
 if __name__ == '__main__':
     unittest.main()
