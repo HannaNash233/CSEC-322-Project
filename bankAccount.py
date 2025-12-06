@@ -1,6 +1,6 @@
 # BankAccount.py
 # 
-# Authors: Hanna Nash, Victoria Seusankar, Will Wian
+# Authors: Hanna Nash, Victoria Seusankar, Will Wian, Detric Brown
 # 
 # Date: 9/6/25
 
