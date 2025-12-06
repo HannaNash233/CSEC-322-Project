@@ -132,7 +132,6 @@ class TestBankAccount(unittest.TestCase):
         self.bankAccount1.writeTransactions()
         
         
-        Simulate a fresh read by clearing current memory
         # We manually clear the list to prove readTransactions actually works
         original_transactions = list(self.bankAccount1.transactions)
         self.bankAccount1.transactions = []
