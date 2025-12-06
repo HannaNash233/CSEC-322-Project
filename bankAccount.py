@@ -156,6 +156,40 @@ class BankAccount(ABC):
             # The original code used a hardcoded CheckingAccount.DEBUG, I'll remove it 
             # as it should likely be self.DEBUG or a global flag if needed.
             # print("decoded data", result)
+
+
+    def __eq__(self, other):
+        assert isinstance(other, BankAccount), "Comparison requires a BankAccount."
+        assert self.accountNumber is not None, "Account number must be assigned."
+        assert other.accountNumber is not None, "Account number must be assigned."
+
+        result = self.accountNumber == other.accountNumber
+        return result
+
+    def __lt__(self, other):
+        assert isinstance(other, BankAccount), "Comparison requires a BankAccount."
+        assert self.accountNumber is not None
+        assert other.accountNumber is not None
+
+        result = self.accountNumber < other.accountNumber
+        return result
+
+    def __gt__(self, other):
+        assert isinstance(other, BankAccount), "Comparison requires a BankAccount."
+        assert self.accountNumber is not None
+        assert other.accountNumber is not None
+
+        result = self.accountNumber > other.accountNumber
+        return result
+
+    def __le__(self, other):
+        assert isinstance(other, BankAccount), "Comparison requires a BankAccount."
+        assert self.accountNumber is not None
+        assert other.accountNumber is not None
+
+        result = self.accountNumber <= other.accountNumber
+        return result
+
   
   
 
