@@ -27,24 +27,14 @@ class Client:
     # @require: state is in VALID_STATES
     # @ensure Client receives a unique client number and one account of chosen type
     
-    def __init__(self, firstName, lastName, phoneNum, street, city, state):
-        assert firstName.isalpha() and 1 <= len(firstName) <= 25
-        assert lastName.isalpha() and 1 <= len(lastName) <= 40
-        assert phoneNum.isdigit() and len(phoneNum) == 10 and phoneNum[0] not in "012"
-        assert isinstance(phoneNum, str)
-
-       # street, city, state = address
-        address = street, city, state
-        assert len(street) <= 30
-        assert len(city) <= 30
-        assert state in Client.VALID_STATES
-        #assert street and len(street) <= 30 and street.replace(" ","").isalnum()
-        #assert city and len(city) <= 30 and city.replace(" ","").isalnum()
-        #assert state in Client.VALID_STATES
-        #assert accountType in {"Checking", "Savings"}, "Account type must be 'Checking' or 'Savings'"
+    def __init__(self, name, phoneNum,address):
+        assert(isinstance(name,Name)), "Invalid Name"
+    	assert(isinstance(phoneNum,PhoneNumber)), "Invalid Phone Number"
+    	assert(isinstance(address,ClientAddress)), "Invalid Address"
         
-        self._firstName = firstName
-        self._lastName = lastName
+        #self._firstName = firstName
+        #self._lastName = lastName
+        self._name = name
         self._phoneNum = phoneNum
         self._address = address
         self._clientNum = Client._NEXTCLIENTNUMBER
@@ -59,6 +49,9 @@ class Client:
         return self._firstName
     def getLastName(self):
         return self._lastName
+
+    def getName(self):
+        return self._name
     
     def getAddress(self):
         return self._address
@@ -100,19 +93,17 @@ class Client:
         
     
     def closeAccount(self, account):
-     
         assert account.getType() in {"Checking", "Savings"}, "Not a valid account"
-       # assert isinstance(account.getType(), ("Savings") or isinstance(account.getType())
-       # assert account != ""
+        # assert isinstance(account.getType(), ("Savings") or isinstance(account.getType())
+        # assert account != ""
         
-       # self.accountList.remove(account)
+        # self.accountList.remove(account)
         accountBalance = account.getBalance()
        
         account.withdraw(accountBalance)
         self.accounts.remove(account)
         
-        
-        
+   
     def setFirst(self, firstName):
         self.first = firstName
     
@@ -121,6 +112,32 @@ class Client:
     
     def setPhoneNum(self, phoneNum):
         self._phoneNum = phoneNum
+
+    def __eq__(self, other):
+        assert isinstance(other, Client)
         
+        result = (self._clientNum == other._clientNum) and (self._address == other._address) and (self._name == other._name) 
+        #result = (self._clientNum == other._clientNum) and (self._address == other._address) and (self._name == other._name) and (self._phoneNum == other._phoneNum)
+        return result 
     
-  
+    def __gt__(self, other):
+        assert isinstance(other, Client)
+        
+        #result = (self._clientNum > other._clientNum) or  (self._phoneNum > other._phoneNum)
+        result = (self._clientNum > other._clientNum)
+        return result     
+    
+    def __lt__(self, other):
+        assert isinstance(other, Client)
+        
+        #result = (self._clientNum < other._clientNum) or (self._phoneNum < other._phoneNum)
+        result = (self._clientNum < other._clientNum)
+        return result       
+    
+    def __le__(self, other):
+        assert isinstance(other, Client)
+        
+        
+        #result = (self._clientNum <= other._clientNum) or  (self._phoneNum <= other._phoneNum)
+        result = (self._clientNum <= other._clientNum)
+        return result            
