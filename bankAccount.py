@@ -3,7 +3,7 @@
 # Authors: Hanna Nash, Victoria Seusankar, Will Wian, Detric Brown
 # 
 # Date: 9/6/25
-
+# 
 # This module defines the BankAccount class
 
 
@@ -27,7 +27,9 @@ class BankAccount(ABC):
         # Preconditions
         assert isinstance(initBalance, (int, float)), "initBalance must be numeric"
         self.balance = float(initBalance)
-        # NOTE: accountNumber will be set by Client (still needs fixed)
+        
+        # NOTE: accountNumber will be set by Client
+        
         self.accountNumber = None
         # Transaction numbering starts at 100 for each account
         self.transactionNumber = 100
@@ -110,12 +112,14 @@ class BankAccount(ABC):
         for i in range(len(self.transactions)):
             message = message + str(self.transactions[i]) + "\n"
             transList.append(i)
-            # NOTE: I am assuming CheckingAccount.key/iv should be self._key/self._iv here
+            
+            # NOTE: CheckingAccount.key/iv should be self._key/self._iv here
             result = encrypt_AES_CBC(message, self._key, self._iv) 
             
             # Write the length of the message to the file.
             outFile.write(str(len(result)).encode())
             outFile.write(b"\n")
+            
             # Write the encrypted message and newline to the file
             outFile.write(result)
             outFile.write(b"\n")
@@ -145,7 +149,8 @@ class BankAccount(ABC):
             length = int(line)
             data = inFile.read(length) # Changed infile to inFile
             inFile.readline() # Changed infile to inFile
-            # NOTE: I am assuming CheckingAccount.key/iv should be self._key/self._iv here
+            
+            # NOTE: CheckingAccount.key/iv should be self._key/self._iv here
             result = decrypt_AES_CBC(data, self._key, self._iv) 
             
             # The original code had logic to read another line and print debug info.
