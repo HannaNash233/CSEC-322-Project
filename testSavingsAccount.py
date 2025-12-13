@@ -10,6 +10,7 @@ import unittest
 from savingsAccount import SavingsAccount
 
 class testSavingsAccount(unittest.TestCase):
+    
     BALANCE1 = 1000
     BALANCE2 = 1500
     BALANCE3 = 80000
@@ -97,6 +98,8 @@ class testSavingsAccount(unittest.TestCase):
         if TestSavingsAccount.DEBUG:
             print("\nTesting Transfer")
             print("Account 1 Balance: ", self.savingsAccount1.getBalance())
+    
+    
     def testPrintTransactions(self):
         # Print debug message if DEBUG is True
         if TestSavingsAccount.DEBUG:
@@ -138,13 +141,11 @@ class testSavingsAccount(unittest.TestCase):
 
 
     def test_checking_client_opened_correctly(self):
-
         self.assertEqual(len(self.client.versions), 1)
         self.client.openAccount("checkings")
         self.assertEqual(len(self.client.versions), 2)
         
     def test_savings_client_opened_correctly(self):
-        
         self.assertEqual(len(self.client.accounts), 1)
         self.client.openAccount("savings")
         self.assertEqual(len(self.client.versions), 2)
@@ -153,30 +154,24 @@ class testSavingsAccount(unittest.TestCase):
         self.client.openAccount("fun")
         self.assertEqual(len(self.client3.accounts), 1)
 
-  def test_close_checking_account(self):
-        
-        self.assertEqual(len(self.client.accountList), 1)
+    def test_close_checking_account(self):self.assertEqual(len(self.client.accountList), 1)
         self.client.closeAccount("Checking")
         self.assertEqual(len(self.client.accountList), 0, "Account list should be empty")
         self.assertEqual(account_to_close.balance, 0, "Account balance should be zeroed")
 
     def test_close_savings_account(self):
-   
         self.assertEqual(len(self.client.accountList), 1)
         self.client.closeAccount("Savings")
         self.assertEqual(len(self.client2.accountList), 0)
         self.assertEqual(account_to_close.balance, 0)
 
     def test_close_account_not_in_list(self):
-       
         self.assertEqual(len(self.client.accountList), 1) 
         self.client.closeAccount("fun")
         self.assertEqual(len(self.client.accountList), 1)
-
         
         
 if __name__ == '__main__':
-
     unittest.main()
 
 
