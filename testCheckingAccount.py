@@ -4,8 +4,7 @@
 #
 # Date: 10/29/25
 
-
-    # checkingAccountTester.py
+# checkingAccountTester.py
 #
 # Authors:
 #
@@ -133,8 +132,6 @@ class testCheckingAccount(unittest.TestCase):
             
         # Act: Verify method runs without error
         self.checkAccount2.readTransactions("checking.txt")    
-
-
 
 if __name__ == '__main__':
     unittest.main()
