@@ -1,10 +1,5 @@
-
-
-
-
 import unittest
 from PhoneNumber import PhoneNumber
-
 
 class TestPhoneNumber(unittest.TestCase):
 	
@@ -69,5 +64,3 @@ class TestPhoneNumber(unittest.TestCase):
 	def testLe(self):
 		print("\nTesting less then or equal")
 		self.assertFalse(self.phoneNum1 <= self.phoneNum2)
-            
-            
