@@ -17,16 +17,16 @@ class Name:
     
     # Get the client's last name.
     def getFirstName(self):
-        return self._firstName
+		return self._firstName
     
     # Get the client's last name.
     def getLastName(self):
-        return self._lastName
+		return self._lastName
     
     # Set the client's first name.
     def setFirst(self, firstName):
-        self._first = firstName
+		self._first = firstName
 
     # Set the client's last name.
     def setLast(self, lastName):
-        self._last = lastName
+		self._last = lastName
