@@ -60,4 +60,3 @@ class ClientAddress:
     
     def __str__(self):
         return ("Street: %s, City: %s, State: %s")
-
