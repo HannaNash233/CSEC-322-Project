@@ -137,7 +137,6 @@ class TestBankAccount(unittest.TestCase):
         # bankAccount1 is type "checkings", so it writes to "checkings.txt"
         self.bankAccount1.writeTransactions()
         
-        
         # We manually clear the list to prove readTransactions actually works
         original_transactions = list(self.bankAccount1.transactions)
         self.bankAccount1.transactions = []
