@@ -16,8 +16,6 @@ DEBUG = False
 
 class SavingsAccount (BankAccount): 
   
-
-  
   INTEREST_RATE = 0.04
   ACCOUNT_TYPE = "Savings"
   _NEXTACCOUNTNUMBER = 1000
@@ -53,41 +51,41 @@ class SavingsAccount (BankAccount):
     for transaction in self.transactions:
       print(transaction)        
     
-   # Calculates and applies the monthly 4.0% annual interest.
-    # @return: True if the interest was calculated and applied, and False otherwise.
+  # Calculates and applies the monthly 4.0% annual interest.
+  # @return: True if the interest was calculated and applied, and False otherwise.
   def calculateInterest(self):
-      # Calculate the monthly interest rate
-      assert self.INTEREST_RATE > 0
-      assert self.balance > 0
-      #monthly_rate = self.INTEREST_RATE / 12.0
+    # Calculate the monthly interest rate
+    assert self.INTEREST_RATE > 0
+    assert self.balance > 0
+    # monthly_rate = self.INTEREST_RATE / 12.0
     
-      # The interest earned on the balance based on the interest rate
-      interestEarned = self.balance * SavingsAccount.INTEREST_RATE
+    # The interest earned on the balance based on the interest rate
+    interestEarned = self.balance * SavingsAccount.INTEREST_RATE
 
-      if interestEarned > 0:
-            # Add the interest earned to the balance
-          self.balance += interestEarned
+    if interestEarned > 0:
+      # Add the interest earned to the balance
+      self.balance += interestEarned
     
-            # Create an interest transaction
-          interestTransaction = Transaction(self.transactionNumber, "interest", interestEarned)
+      # Create an interest transaction
+      interestTransaction = Transaction(self.transactionNumber, "interest", interestEarned)
         
-            # Append the transaction to the transactions list
-          self.transactions.append(interestTransaction)
-          self.transactionNumber += 1
+      # Append the transaction to the transactions list
+      self.transactions.append(interestTransaction)
+      self.transactionNumber += 1
             
-          print("Interest Applied: %.2f added to Savings Account %d." % (interestEarned, self.getAccountNumber()))
-          return True
+      print("Interest Applied: %.2f added to Savings Account %d." % (interestEarned, self.getAccountNumber()))
+      return True
         
-      else:
-          print("No interest applied to Savings Account %d due to negative balance." % (self.getAccountNumber()))
-          return False
+    else:
+      print("No interest applied to Savings Account %d due to negative balance." % (self.getAccountNumber()))
+      return False
 
     
     # Handles withdrawals, including checks for debt limits and applying tiered overdraft fees.
     # @param amount: The amount to withdraw.
     # @return: True if the withdrawal is successful, and False otherwise.
   def withdraw(self, amount):
-        # Check to see if the amount requested is positive
+    # Check to see if the amount requested is positive
     assert self.balance > 0 
     assert amount > 0
     assert isinstance(amount, (int, float)) and amount > 0
@@ -127,35 +125,27 @@ class SavingsAccount (BankAccount):
         self.balance -= 50
         penaltyTransaction = Transaction(self.transactionNumber, "Penalty", 50)
         self.transactions.append(penaltyTransaction)  
-      
-        
-    
-   
 
-    
-    # 
-    # 
+  
   def transfer(self, fromAccount, amount):
-      assert self.balance > 0
-      assert amount > 0
-      assert self != fromAccount
-
-        # Create a variable to store the successful withdrawal
-      successfulWithdrawal = fromAccount.withdraw(amount)
+    assert self.balance > 0
+    assert amount > 0
+    assert self != fromAccount
     
-        # If the withdrawal is successful, deposit the specified amount and return true
-      if successfulWithdrawal:
-          self.deposit(amount) 
-          return True
+    # Create a variable to store the successful withdrawal
+    successfulWithdrawal = fromAccount.withdraw(amount)
     
-        # If the withdrawal does not meet the proper conditions, print a message to let the user know
-        # that the transfer failed, and return false
-      else:
-          print("Transfer failed: Withdrawal from the source account was denied.")
-          return False
+    # If the withdrawal is successful, deposit the specified amount and return true
+    if successfulWithdrawal:
+      self.deposit(amount) 
+      return True
+    
+    # If the withdrawal does not meet the proper conditions, print a message to let the user know
+    # that the transfer failed, and return false
+    else:
+      print("Transfer failed: Withdrawal from the source account was denied.")
+      return False
         
         
   def __repr__(self):
     return ("SavingsAccount(balance = %d)" % self.balance)  
-
-
