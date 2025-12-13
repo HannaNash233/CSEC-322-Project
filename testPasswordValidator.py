@@ -22,13 +22,13 @@ class TestpasswordValidator(unittest.TestCase):
 
   # Set up the validator instance before each test method
   def setUp(self):
-      self.validator = passwordValidator() 
+    self.validator = passwordValidator() 
 
 
   # Test passwords that should be validated 
   def test_is_valid_positive_cases(self):
       if TestpasswordValidator.DEBUG:
-          print("\n Testing isValid Positive Cases: ")
+        print("\n Testing isValid Positive Cases: ")
 
       self.assertTrue(self.validator.isValid(TestpasswordValidator.VALID_PASS), "Should validate a valid password.")
       self.assertTrue(self.validator.isValid(TestpasswordValidator.VALID_PASS_MIN), "Should validate password at minimum length (8).")
@@ -37,8 +37,8 @@ class TestpasswordValidator(unittest.TestCase):
 
   # Test passwords that fail due to an incorrect length
   def test_is_valid_negative_length_cases(self):
-      if TestpasswordValidator.DEBUG:
-        print("\n Testing isValid Negative Length Cases: ")
+    if TestpasswordValidator.DEBUG:
+      print("\n Testing isValid Negative Length Cases: ")
 
       # Variable for if the password is too short
       short_pass = "short"
@@ -70,34 +70,34 @@ class TestpasswordValidator(unittest.TestCase):
     for name, password in disallowed_chars.items():
       with self.subTest(char_name = name):
         self.assertFalse(self.validator.isValid(password), f"Should fail due to disallowed character: {name}") 
-        if TestpasswordValidator.DEBUG:
-          print(f"Tested pass with {name} ('{password}'): {self.validator.isValid(password)}") 
+      if TestpasswordValidator.DEBUG:
+        print(f"Tested pass with {name} ('{password}'): {self.validator.isValid(password)}") 
 
 
   # Test invalid input types
   def test_is_valid_edge_cases(self):
-      if TestpasswordValidator.DEBUG:
-        print("\n Testing isValid Edge Cases (Invalid Input): ")
+    if TestpasswordValidator.DEBUG:
+      print("\n Testing isValid Edge Cases (Invalid Input): ")
 
-      try:
-      	  self.validator.isValid(12345678)
-      except AssertionError:
-      	  print("Should fail if input is not a string.")
+    try:
+      self.validator.isValid(12345678)
+    except AssertionError:
+      print("Should fail if input is not a string.")
      
-      try:
-      	  self.validator.isValid(None)
-      except AssertionError:
-      	  print("Should fail if input is None.")
+    try:
+      self.validator.isValid(None)
+    except AssertionError:
+      print("Should fail if input is None.")
       	  
-      try:
-      	  self.validator.isValid("")
-      except AssertionError:
-      	  print("Should fail if input is empty string")
+    try:
+      self.validator.isValid("")
+    except AssertionError:
+      print("Should fail if input is empty string")
       
-      if TestpasswordValidator.DEBUG:
-        print(f"Tested non-string input: {self.validator.isValid(12345678)}") 
-        print(f"Tested None input: {self.validator.isValid(None)}") 
-        print(f"Tested empty string: {self.validator.isValid('')}")
+    if TestpasswordValidator.DEBUG:
+      print(f"Tested non-string input: {self.validator.isValid(12345678)}") 
+      print(f"Tested None input: {self.validator.isValid(None)}") 
+      print(f"Tested empty string: {self.validator.isValid('')}")
 
 
   # Test to see if the hash method returns the correct type and size
@@ -195,4 +195,4 @@ class TestpasswordValidator(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()
