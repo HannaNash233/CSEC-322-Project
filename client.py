@@ -28,7 +28,7 @@ class Client:
     # @ensure Client receives a unique client number and one account of chosen type
     
     def __init__(self, name, phoneNum,address):
-    	assert(isinstance(name,Name)), "Invalid Name"
+        assert(isinstance(name,Name)), "Invalid Name"
     	assert(isinstance(phoneNum,PhoneNumber)), "Invalid Phone Number"
     	assert(isinstance(address,ClientAddress)), "Invalid Address"
         
@@ -45,10 +45,10 @@ class Client:
     def getClientNumber(self):
         return self._clientNum
     
-    #def getFirstName(self):
-    #    return self._firstName
-    #def getLastName(self):
-    #    return self._lastName
+    def getFirstName(self):
+        return self._firstName
+    def getLastName(self):
+        return self._lastName
 
     def getName(self):
         return self._name
@@ -93,19 +93,17 @@ class Client:
         
     
     def closeAccount(self, account):
-     
         assert account.getType() in {"Checking", "Savings"}, "Not a valid account"
-       # assert isinstance(account.getType(), ("Savings") or isinstance(account.getType())
-       # assert account != ""
+        # assert isinstance(account.getType(), ("Savings") or isinstance(account.getType())
+        # assert account != ""
         
-       # self.accountList.remove(account)
+        # self.accountList.remove(account)
         accountBalance = account.getBalance()
        
         account.withdraw(accountBalance)
         self.accounts.remove(account)
         
-        
-        
+   
     def setFirst(self, firstName):
         self.first = firstName
     
@@ -143,9 +141,3 @@ class Client:
         #result = (self._clientNum <= other._clientNum) or  (self._phoneNum <= other._phoneNum)
         result = (self._clientNum <= other._clientNum)
         return result            
-        
-    
-  
-
-
-
