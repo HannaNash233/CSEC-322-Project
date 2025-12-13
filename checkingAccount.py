@@ -2,7 +2,7 @@
 #
 # authors: Will Wian, Detric Brown, Evan Fannin
 #
-# date: 10/29/25
+# Date: 10/29/25
 
 from bankAccount import BankAccount
 from transaction import Transaction
@@ -17,8 +17,8 @@ class CheckingAccount(BankAccount):
      OVERDRAFT_FEE = 20.00  
     
 
-     def __init__(self, initBalance=0.0): #Me
-        #Initialize the account with an initial balance and empty transaction list
+     def __init__(self, initBalance=0.0): 
+          # Initialize the account with an initial balance and empty transaction list
           super().__init__(initBalance)
           assert isinstance(initBalance, (int, float))
           self.balance = float(initBalance)
@@ -29,13 +29,13 @@ class CheckingAccount(BankAccount):
           CheckingAccount._NEXTACCOUNTNUMBER += 1
           self.transactionNumber = 100
     
-     def displayDetails(self): #Me
-        #Display current account details
+     def displayDetails(self): 
+          # Display current account details
           print(f"Current balance: ${self.balance:.2f}")
           print("Recent transactions:")
           print("\n Transactions for Account %d" % (self.accountNumber))
     
-        # Check if the list of transactions is empty
+          # Check if the list of transactions is empty
           if not self.transactions:
                print("No transactions recorded.")
                return
@@ -49,8 +49,8 @@ class CheckingAccount(BankAccount):
     # @require: balance > 0 to earn interest
      def calculateInterest(self):
           assert self.balance > 0, "Interest cannot be applied to negative or zero balance."
-          #if self.balance <= 0:
-          #     return False
+          # if self.balance <= 0:
+          # return False
         
           interestEarned = self.balance * CheckingAccount.INTEREST_RATE
           self.balance += interestEarned
@@ -74,8 +74,8 @@ class CheckingAccount(BankAccount):
           self.transactionNumber += 1
           return True
     
-     '''def printTransactions(self):
-          print("Transaction # %d, amount $%.2f, date %s type: %s" % (self.transactionNumber, self._amount, self._date, self._tType))'''
+     def printTransactions(self):
+          print("Transaction # %d, amount $%.2f, date %s type: %s" % (self.transactionNumber, self._amount, self._date, self._tType))
      
      def tranfer(self, fromAccount, amount):
           assert self.balance > 0
@@ -95,9 +95,3 @@ class CheckingAccount(BankAccount):
           else:
                print("Transfer failed: Withdrawal from the source account was denied.")
                return False    
-          
-  
-          
-
-
-
