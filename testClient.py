@@ -1,6 +1,6 @@
 # clientTester.py
 # 
-# Author(s): William Wian, 
+# Author(s): William Wian
 # 
 # Date: 10/29/25
 
@@ -10,12 +10,13 @@ from client import Client
 
 # got prints just to see what everything is doing currently 
 class testClient(unittest.TestCase):    
+
     def setUp(self):
         address1 = ("168 Pelham Place", "Norfolk", "VA")
         address2 = ("167 Main St", "Richmond", "VA") 
         self.client1 = Client("joe", "smith", "7576767679", address1, "Checking")
         self.client2 = Client("John", "Johnson", "7571234567", address2, "Savings")
-        
+            
         # Client number here is 100 101
         # goes up at each test
         print(self.client1.getClientNumber())
@@ -84,18 +85,17 @@ class testClient(unittest.TestCase):
             Client("John", "Johnson", "1234567890", address3, "Wrong")
 
    def test_eq(self):
-        if testClient.DEBUG:
-            print("\nTesting __eq__ method")
+       if testClient.DEBUG:
+           print("\nTesting __eq__ method")
     
         # Assign account numbers for controlled comparison
         self.client1 = self.client2
         
-        
-            # Equal
+        # Equal
         result = (self.client1 == self.client2)
         self.assertTrue(result)
     
-            # Not equal
+        # Not equal
         result = (self.client1 == self.client3)
         self.assertFalse(result)
     
@@ -104,7 +104,6 @@ class testClient(unittest.TestCase):
         if testClient.DEBUG:
             print("\nTesting __lt__ method")
     
-       
         result = (self.client1 < self.client2)
         self.assertTrue(result)
     
@@ -116,7 +115,6 @@ class testClient(unittest.TestCase):
         if testClient.DEBUG:
             print("\nTesting __gt__ method")
     
-       
         result = (self.client1 > self.client2)
         self.assertFalse(result)
     
@@ -128,22 +126,15 @@ class testClient(unittest.TestCase):
         if testClient.DEBUG:
             print("\nTesting __le__ method")
     
-       
         result = (self.client1 <= self.client2)
         self.assertTrue(result)
-    
            
         result = (self.client3 <= self.client2)
         self.assertFalse(result)
-    
            
         result = (self.client2 <= self.client1)
         self.assertFalse(result)
         
-    
            
 if __name__ == '__main__':
-
     unittest.main()
-
-
