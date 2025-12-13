@@ -67,11 +67,11 @@ class passwordValidator:
       # Generate a new, cryptographically secure random salt
       salt = os.urandom(self.SALT_SIZE)
       
-    # Hash the password using PBKDF2_HMAC
-    password_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen = self.HASH_KEY_LENGTH)
+      # Hash the password using PBKDF2_HMAC
+      password_hash = hashlib.pbkdf2_hmac(self.HASH_ALGORITHM, password.encode('utf-8'), salt, self.ITERATIONS, dklen = self.HASH_KEY_LENGTH)
     
-    # Return the hash and salt
-    return password_hash, salt
+      # Return the hash and salt
+      return password_hash, salt
 
 
   # Verifies a password
@@ -91,4 +91,3 @@ class passwordValidator:
     
     # Compare the hashes to avoid leaking information about the password length.
     return attempted_hash == stored_hash
-
